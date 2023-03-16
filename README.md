@@ -1,7 +1,7 @@
 <p align="center"><a href="https://www.ipglobal.es" target="_blank"><img src="https://www.ipglobal.es/wp-content/uploads/2017/12/logo-ipg-techhub.png" width="400" alt="Ipglobal : Tech Hub"></a></p>
 
 <p align="center">
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
 </p>
 
 # Requirements
