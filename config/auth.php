@@ -60,10 +60,13 @@ return [
     */
 
     'providers' => [
+
+        /*
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => \olml89\IPGlobalTest\Common\Infrastructure\Laravel\Models\User::class,
         ],
+        */
 
         // 'users' => [
         //     'driver' => 'database',

@@ -189,11 +189,11 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
+        \olml89\IPGlobalTest\Common\Infrastructure\Laravel\Providers\AppServiceProvider::class,
+        \olml89\IPGlobalTest\Common\Infrastructure\Laravel\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        \olml89\IPGlobalTest\Common\Infrastructure\Laravel\Providers\EventServiceProvider::class,
+        \olml89\IPGlobalTest\Common\Infrastructure\Laravel\Providers\RouteServiceProvider::class,
 
     ],
 
