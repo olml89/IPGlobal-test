@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use olml89\IPGlobalTest\Post\Infrastructure\Input\Get\LaravelGetController as LaravelGetPostController;
 use olml89\IPGlobalTest\Post\Infrastructure\Input\Publish\LaravelPublishController as LaravelPublishPostController;
 
 /*
@@ -15,3 +16,4 @@ use olml89\IPGlobalTest\Post\Infrastructure\Input\Publish\LaravelPublishControll
 */
 
 Route::post('/posts', LaravelPublishPostController::class);
+Route::get('/posts/{id}', LaravelGetPostController::class);

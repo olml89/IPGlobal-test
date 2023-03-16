@@ -3,6 +3,8 @@
 namespace olml89\IPGlobalTest\Common\Infrastructure\Laravel\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use olml89\IPGlobalTest\Common\Domain\Exceptions\NotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -44,5 +46,20 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * @throws Throwable
+     */
+    protected function prepareException(Throwable $e): Throwable
+    {
+        // When we get to this point, the NotFoundException from the Domain has already been logged.
+        // This also logs the previous underlying Infrastructure exception.
+        if ($e instanceof NotFoundException) {
+            $this->report($e->getInfrastructureException());
+            $e = new NotFoundHttpException($e->getMessage());
+        }
+
+        return parent::prepareException($e);
     }
 }

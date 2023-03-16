@@ -4,7 +4,7 @@ namespace olml89\IPGlobalTest\Post\Application;
 
 use olml89\IPGlobalTest\Post\Domain\Post;
 
-final class PublishUseCaseResult
+final class PostResult
 {
     public readonly int $id;
     public readonly int $user_id;
