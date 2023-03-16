@@ -2,9 +2,10 @@
 
 namespace olml89\IPGlobalTest\Post\Application;
 
+use olml89\IPGlobalTest\Common\Domain\JsonSerializable;
 use olml89\IPGlobalTest\Post\Domain\Post;
 
-final class PostResult
+final class PostResult extends JsonSerializable
 {
     public readonly int $id;
     public readonly int $user_id;
