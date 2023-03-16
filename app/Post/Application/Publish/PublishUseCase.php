@@ -1,10 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\Post\Application;
+namespace olml89\IPGlobalTest\Post\Application\Publish;
 
 use Faker\Generator as Faker;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\AutoIncrementalId\AutoIncrementalId;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
+use olml89\IPGlobalTest\Post\Application\PostResult;
 use olml89\IPGlobalTest\Post\Domain\Post;
 
 final class PublishUseCase
@@ -13,7 +14,7 @@ final class PublishUseCase
         private readonly Faker $faker,
     ) {}
 
-    public function publish(PublishData $publishData): PublishUseCaseResult
+    public function publish(PublishData $publishData): PostResult
     {
         // We simulate the creation of an AutoIncrementalId by the database
         $post = new Post(
@@ -23,6 +24,6 @@ final class PublishUseCase
             body: new StringValueObject($publishData->body),
         );
 
-        return new PublishUseCaseResult($post);
+        return new PostResult($post);
     }
 }

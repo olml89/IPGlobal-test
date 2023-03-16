@@ -5,7 +5,7 @@ namespace olml89\IPGlobalTest\Post\Infrastructure\Input\Publish;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use olml89\IPGlobalTest\Common\Infrastructure\Laravel\Rules\IntBiggerThan0 as LaravelIntBiggerThan0Rule;
-use olml89\IPGlobalTest\Post\Application\PublishData;
+use olml89\IPGlobalTest\Post\Application\Publish\PublishData;
 
 class LaravelPublishPostRequest extends FormRequest
 {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\Post\Application;
+namespace olml89\IPGlobalTest\Post\Application\Publish;
 
 final class PublishData
 {

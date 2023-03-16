@@ -4,8 +4,8 @@ namespace Post;
 
 use Faker\Generator as Faker;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\AutoIncrementalId\InvalidAutoIncrementalIdException;
-use olml89\IPGlobalTest\Post\Application\PublishData;
-use olml89\IPGlobalTest\Post\Application\PublishUseCase;
+use olml89\IPGlobalTest\Post\Application\Publish\PublishData;
+use olml89\IPGlobalTest\Post\Application\Publish\PublishUseCase;
 use Tests\TestCase;
 
 final class PublishUseCaseTest extends TestCase
