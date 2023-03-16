@@ -61,12 +61,10 @@ return [
 
     'providers' => [
 
-        /*
         'users' => [
             'driver' => 'eloquent',
-            'model' => \olml89\IPGlobalTest\Common\Infrastructure\Laravel\Models\User::class,
+            'model' => null,
         ],
-        */
 
         // 'users' => [
         //     'driver' => 'database',

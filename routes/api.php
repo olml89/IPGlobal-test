@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use olml89\IPGlobalTest\Post\Infrastructure\Input\Publish\LaravelPublishController as LaravelPublishPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/posts', LaravelPublishPostController::class);
