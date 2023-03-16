@@ -5,7 +5,7 @@ namespace Post;
 use Faker\Generator as Faker;
 use Tests\TestCase;
 
-final class PublishPostTest extends TestCase
+final class PublishFeatureTest extends TestCase
 {
     private readonly Faker $faker;
 
