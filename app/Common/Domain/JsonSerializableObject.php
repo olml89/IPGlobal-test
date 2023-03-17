@@ -2,9 +2,9 @@
 
 namespace olml89\IPGlobalTest\Common\Domain;
 
-use JsonSerializable as JsonSerializableContract;
+use JsonSerializable;
 
-abstract class JsonSerializable implements JsonSerializableContract
+abstract class JsonSerializableObject implements JsonSerializable
 {
 
     public function jsonSerialize(): array

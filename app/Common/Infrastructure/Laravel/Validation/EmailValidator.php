@@ -2,7 +2,7 @@
 
 namespace olml89\IPGlobalTest\Common\Infrastructure\Laravel\Validation;
 
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Email\EmailValidator as EmailValidatorContract;
+use olml89\IPGlobalTest\User\Domain\Email\EmailValidator as EmailValidatorContract;
 
 final class EmailValidator extends Validator implements EmailValidatorContract
 {

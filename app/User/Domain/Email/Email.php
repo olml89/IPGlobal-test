@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\Common\Domain\ValueObjects\Email;
+namespace olml89\IPGlobalTest\User\Domain\Email;
 
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
 

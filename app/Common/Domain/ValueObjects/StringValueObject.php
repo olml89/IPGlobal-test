@@ -2,9 +2,10 @@
 
 namespace olml89\IPGlobalTest\Common\Domain\ValueObjects;
 
+use JsonSerializable;
 use Stringable;
 
-class StringValueObject implements Stringable
+class StringValueObject implements Stringable, JsonSerializable
 {
     public function __construct(
         private readonly string $value,
@@ -13,5 +14,10 @@ class StringValueObject implements Stringable
     public function __toString(): string
     {
         return $this->value;
+    }
+
+    public function jsonSerialize(): string
+    {
+        return (string)$this;
     }
 }

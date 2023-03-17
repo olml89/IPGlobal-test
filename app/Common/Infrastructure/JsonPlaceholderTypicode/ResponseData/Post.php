@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\Post\Infrastructure\Input\Get;
+namespace olml89\IPGlobalTest\Common\Infrastructure\JsonPlaceholderTypicode\ResponseData;
 
 use Psr\Http\Message\ResponseInterface;
 
-final class JsonTypicodeGetPostResponseData
+final class Post
 {
     public function __construct(
         public readonly int $id,

@@ -2,7 +2,9 @@
 
 namespace olml89\IPGlobalTest\Common\Domain\ValueObjects;
 
-class IntValueObject
+use JsonSerializable;
+
+class IntValueObject implements JsonSerializable
 {
     public function __construct(
         private readonly int $value,
@@ -11,5 +13,10 @@ class IntValueObject
     public function toInt(): int
     {
         return $this->value;
+    }
+
+    public function jsonSerialize(): int
+    {
+        return $this->toInt();
     }
 }

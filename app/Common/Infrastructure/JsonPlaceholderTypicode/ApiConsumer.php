@@ -20,6 +20,14 @@ final class ApiConsumer
      */
     public function getPost(int $id): ResponseInterface
     {
-        return $this->httpClient->get(self::URL . '/posts/' . $id);
+        return $this->httpClient->get(self::URL.'/posts/'.$id);
+    }
+
+    /**
+     * @throws GuzzleException
+     */
+    public function getUser(int $id): ResponseInterface
+    {
+        return $this->httpClient->get(self::URL.'/users/'.$id);
     }
 }
