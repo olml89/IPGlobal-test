@@ -1,21 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace Post;
+namespace Tests\Unit\Post;
 
 use Faker\Generator as Faker;
 use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use Mockery\Mock;
 use olml89\IPGlobalTest\Post\Application\Retrieve\RetrieveUseCase;
 use olml89\IPGlobalTest\Post\Domain\RemotePostRetrievingException;
 use Tests\TestCase;
+use Tests\Unit\Post\JsonPlaceholderTypicode\PostDataGenerator;
+use Tests\Unit\Post\JsonPlaceholderTypicode\UserDataGenerator;
 
 final class RetrieveUseCaseTest extends TestCase
 {
@@ -77,16 +76,19 @@ final class RetrieveUseCaseTest extends TestCase
 
     public function test_that_valid_post_id_returns_valid_post(): void
     {
+        $userId = $this->faker->randomNumber();
+        $postData = (new PostDataGenerator($this->faker))->withId($this->id)->withUserId($userId);
+        $userData = (new UserDataGenerator($this->faker))->withId($userId);
+
         $this->requests->append(
             new Response(
                 status: 200,
-                body: json_encode([
-                    'id' => $this->id,
-                    'userId' => $this->faker->randomNumber(),
-                    'title' => $this->faker->title(),
-                    'body' => $this->faker->text(),
-                ]),
-            )
+                body: (string)$postData,
+            ),
+            new Response(
+                status: 200,
+                body: (string)$userData
+            ),
         );
 
         $postResult = $this->retrieveUseCase->retrieve($this->id);

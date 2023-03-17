@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Post;
+namespace Test\Feature\Post;
 
 use Faker\Generator as Faker;
-use olml89\IPGlobalTest\Post\Infrastructure\Input\Get\JsonTypicodeGetPostResponseData;
 use Tests\TestCase;
 
 final class RetrieveFeatureTest extends TestCase

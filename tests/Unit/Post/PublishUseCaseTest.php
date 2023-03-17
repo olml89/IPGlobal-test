@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Post;
+namespace Tests\Unit\Post;
 
 use Faker\Generator as Faker;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\AutoIncrementalId\InvalidAutoIncrementalIdException;

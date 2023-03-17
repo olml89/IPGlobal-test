@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Post;
+namespace Tests\Feature\Post;
 
 use Faker\Generator as Faker;
 use Tests\TestCase;
