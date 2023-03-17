@@ -196,6 +196,7 @@ return [
         \olml89\IPGlobalTest\Common\Infrastructure\Laravel\Providers\EventServiceProvider::class,
         \olml89\IPGlobalTest\Common\Infrastructure\Laravel\Providers\RouteServiceProvider::class,
         \olml89\IPGlobalTest\Common\Infrastructure\Laravel\Providers\ValidatorServiceProvider::class,
+        \olml89\IPGlobalTest\Common\Infrastructure\Doctrine\DoctrineServiceProvider::class,
 
     ],
 
