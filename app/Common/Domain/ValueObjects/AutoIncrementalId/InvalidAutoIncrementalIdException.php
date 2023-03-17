@@ -6,8 +6,10 @@ use olml89\IPGlobalTest\Common\Domain\ValueObjects\ValueObjectException;
 
 final class InvalidAutoIncrementalIdException extends ValueObjectException
 {
-    public function __construct(string $message)
+    public static function notBiggerThan0(int $id): self
     {
-        parent::__construct($message);
+        return new self(
+            sprintf('Auto-incremental IDs must be bigger than 0, <%s> provided', $id)
+        );
     }
 }

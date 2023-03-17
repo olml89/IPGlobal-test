@@ -4,7 +4,6 @@ namespace olml89\IPGlobalTest\Post\Infrastructure\Input\Publish;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use olml89\IPGlobalTest\Common\Infrastructure\Laravel\Rules\IntBiggerThan0 as LaravelIntBiggerThan0Rule;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishData;
 
 class LaravelPublishPostRequest extends FormRequest
@@ -25,7 +24,7 @@ class LaravelPublishPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', new LaravelIntBiggerThan0Rule],
+            'user_id' => ['required', 'integer', 'min:1'],
             'title' => ['required', 'string'],
             'body' => ['required', 'string'],
         ];

@@ -16,10 +16,8 @@ final class AutoIncrementalId extends IntValueObject
 
     private function ensureIsBiggerThan0(int $id): void
     {
-        $rule = new IntBiggerThan0($id);
-
-        if (!$rule->check()) {
-            throw new InvalidAutoIncrementalIdException($rule->failureMessage());
+        if ($id <= 0) {
+            throw InvalidAutoIncrementalIdException::notBiggerThan0($id);
         }
     }
 }
