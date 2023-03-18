@@ -82,6 +82,7 @@ Steps:
 
 - Refactor the post publishing feature to need a valid Api token in order to perform the action.
 
+
 # How to use it
 
 First you have to install the application with its dependencies:
@@ -90,11 +91,13 @@ First you have to install the application with its dependencies:
 composer install
 ````
 
+
 Then you will have to generate the database schema:
 
 ````php
 php artisan doctrine:migrations:migrate
 ````
+
 
 After that you can start creating new users:
 
@@ -117,6 +120,7 @@ php artisan user:create
         {company_bs}
 ````
 
+
 Or if you prefer to skip specifying all the parameters and to create a random
 user setting only **email** and **password**:
 
@@ -124,12 +128,14 @@ user setting only **email** and **password**:
 php artisan user:create {email} {password}
 ````
 
+
 Using the credentials of the user, now you can get an Api authentication token:
 
+#### Expect code 200 and an authentication token     
+**POST** /api/auth     
+**Content-Type**: application/json     
+
 ```http
-   ### Expect code 200 and an authentication token
-   POST /api/auth
-   Content-Type: application/json
    
    Body
     {
@@ -145,18 +151,20 @@ Using the credentials of the user, now you can get an Api authentication token:
     }
 ```
 
+
 This allows you to create new posts:
 
+#### Expect code 201 and info about the created post    
+**POST** /api/posts    
+**Content-Type**: application/json    
+**Api-Token**: 2437d1dc0ea2921dcd1a0a27fcf0debb    
+
 ```http
-   ### Expect code 201 and info about the created post
-   POST /api/posts
-   Content-Type: application/json
-   Api-Token: 2437d1dc0ea2921dcd1a0a27fcf0debb
    
    Body
     {
         "title": "This is a random post",
-        "body": ""Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." 
     }
    
    Response
@@ -191,13 +199,15 @@ This allows you to create new posts:
     }
 ```
 
+
 You can also retrieve published posts (no matter who the author is):
 
+#### Expect code 200 and info about the requested post    
+**POST** /api/posts/85e9ff5a-b601-4e4c-9946-d1050d1c1c89    
+**Content-Type**: application/json    
+**Api-Token**: 2437d1dc0ea2921dcd1a0a27fcf0debb    
+
 ```http
-   ### Expect code 200 and info about the requested user
-   POST /api/posts/85e9ff5a-b601-4e4c-9946-d1050d1c1c89
-   Content-Type: application/json
-   Api-Token: 2437d1dc0ea2921dcd1a0a27fcf0debb
    
    Response
     {
@@ -232,16 +242,18 @@ You can also retrieve published posts (no matter who the author is):
 ```
 
 As a legacy feature, you can still get remote JsonPlaceholderApi posts, but the id's of the 
-post and the user and the posted_at field will be mocked.
+post and the user will be mocked and generated randomly and the posted_at field will be set to the 
+time of the request.
 
-You will see the next example matches with [JsonPlaceholderApi resource](https://jsonplaceholder.typicode.com/posts/12)
-and that the user information corresponds to You will see the next example matches with [JsonPlaceholderApi resource](https://jsonplaceholder.typicode.com/users/2):
+You will see the next example matches with [https://jsonplaceholder.typicode.com/posts/12](https://jsonplaceholder.typicode.com/posts/12)
+and that the user information corresponds to [https://jsonplaceholder.typicode.com/users/2](https://jsonplaceholder.typicode.com/users/2):
+
+#### Expect code 200 and info about the requested post in JsonPlaceholderApi    
+**POST** /api/jsonapi/posts/12    
+**Content-Type**: application/json    
+**Api-Token**: 2437d1dc0ea2921dcd1a0a27fcf0debb    
 
 ```http
-   ### Expect code 200 and info about the requested user
-   POST /api/posts/12
-   Content-Type: application/json
-   Api-Token: 2437d1dc0ea2921dcd1a0a27fcf0debb
    
    Response
     {
