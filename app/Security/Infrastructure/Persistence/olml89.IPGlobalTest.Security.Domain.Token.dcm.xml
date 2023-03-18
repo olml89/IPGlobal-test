@@ -20,7 +20,10 @@
             <generator strategy="AUTO" />
         </id>
 
-        <many-to-one field="user" target-entity="olml89\IPGlobalTest\User\Domain\User" >
+        <many-to-one field="user"
+                     target-entity="olml89\IPGlobalTest\User\Domain\User"
+                     fetch="EAGER"
+        >
             <join-column
                 name="user_id"
                 referenced-column-name="id"
