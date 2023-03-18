@@ -2,7 +2,7 @@
 
 namespace olml89\IPGlobalTest\Security\Application;
 
-final class AuthorizeData
+final class AuthenticationData
 {
     public function __construct(
         public readonly string $email,

@@ -3,15 +3,15 @@
 namespace olml89\IPGlobalTest\Security\Infrastructure\Input;
 
 use Illuminate\Http\JsonResponse;
-use olml89\IPGlobalTest\Security\Application\AuthorizeUseCase;
+use olml89\IPGlobalTest\Security\Application\AuthenticateUseCase;
 
-final class LaravelAuthController
+final class LaravelAuthenticationController
 {
     public function __construct(
-        private readonly AuthorizeUseCase $authorizeUseCase,
+        private readonly AuthenticateUseCase $authorizeUseCase,
     ) {}
 
-    public function __invoke(LaravelAuthRequest $request): JsonResponse
+    public function __invoke(LaravelAuthenticationRequest $request): JsonResponse
     {
         $result = $this->authorizeUseCase->authorize($request->validated());
 

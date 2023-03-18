@@ -4,9 +4,9 @@ namespace olml89\IPGlobalTest\Security\Infrastructure\Input;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use olml89\IPGlobalTest\Security\Application\AuthorizeData;
+use olml89\IPGlobalTest\Security\Application\AuthenticationData;
 
-final class LaravelAuthRequest extends FormRequest
+final class LaravelAuthenticationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,11 +36,11 @@ final class LaravelAuthRequest extends FormRequest
      * @param  mixed  $default
      * @return mixed
      */
-    public function validated($key = null, $default = null): AuthorizeData
+    public function validated($key = null, $default = null): AuthenticationData
     {
         $validatedData = parent::validated($key, $default);
 
-        return new AuthorizeData(
+        return new AuthenticationData(
             email: $validatedData['email'],
             password: $validatedData['password'],
         );

@@ -5,7 +5,7 @@ namespace olml89\IPGlobalTest\Security\Application;
 use olml89\IPGlobalTest\Common\Domain\JsonSerializableObject;
 use olml89\IPGlobalTest\Security\Domain\Token;
 
-final class AuthorizationResult extends JsonSerializableObject
+final class AuthenticationResult extends JsonSerializableObject
 {
     public readonly string $user_id;
     public readonly string $token;

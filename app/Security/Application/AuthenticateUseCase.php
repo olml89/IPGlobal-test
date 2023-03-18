@@ -14,7 +14,7 @@ use olml89\IPGlobalTest\User\Domain\Password\Hasher;
 use olml89\IPGlobalTest\User\Domain\UserFinder;
 use olml89\IPGlobalTest\User\Domain\UserNotFoundException;
 
-final class AuthorizeUseCase
+final class AuthenticateUseCase
 {
     public function __construct(
         private readonly EmailValidator $emailValidator,
@@ -27,7 +27,7 @@ final class AuthorizeUseCase
     /**
      * @throws InvalidEmailException | UserNotFoundException | TokenStorageException
      */
-    public function authorize(AuthorizeData $authorizeData): AuthorizationResult
+    public function authorize(AuthenticationData $authorizeData): AuthenticationResult
     {
         $email = new Email($authorizeData->email, $this->emailValidator);
         $user = $this->userFinder->findByEmail($email);
@@ -47,6 +47,6 @@ final class AuthorizeUseCase
             $this->tokenRepository->save($token);
         }
 
-        return new AuthorizationResult($token);
+        return new AuthenticationResult($token);
     }
 }
