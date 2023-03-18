@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishData;
 
-class LaravelPublishPostRequest extends FormRequest
+class LaravelPublishRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

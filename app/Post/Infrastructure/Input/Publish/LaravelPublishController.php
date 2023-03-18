@@ -15,7 +15,7 @@ class LaravelPublishController extends Controller
         private readonly UrlGenerator $urlGenerator,
     ) {}
 
-    public function __invoke(LaravelPublishPostRequest $request): JsonResponse
+    public function __invoke(LaravelPublishRequest $request): JsonResponse
     {
         $result = $this->publishPost->publish($request->validated());
 
