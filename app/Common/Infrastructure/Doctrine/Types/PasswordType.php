@@ -38,7 +38,7 @@ final class PasswordType extends StringType
     /**
      * @throws ConversionException | ReflectionException
      */
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): StringValueObject
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): Password
     {
         if (!is_string($value)) {
             throw ConversionException::conversionFailed($value, $this->getName());

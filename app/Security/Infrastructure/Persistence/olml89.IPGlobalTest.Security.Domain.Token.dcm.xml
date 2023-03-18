@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+
+    <entity name="olml89\IPGlobalTest\Security\Domain\Token" table="tokens">
+
+        <indexes>
+            <index name="idx_id"
+                   columns="id"
+            />
+        </indexes>
+
+        <id name="id"
+            column="id"
+            type="integer"
+        >
+            <generator strategy="AUTO" />
+        </id>
+
+        <many-to-one field="user" target-entity="olml89\IPGlobalTest\User\Domain\User" >
+            <join-column
+                name="user_id"
+                referenced-column-name="id"
+            />
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </many-to-one>
+
+        <field
+            name="hash"
+            column="hash"
+            type="md5"
+        />
+
+        <field name="expiresAt"
+               column="expires_at"
+               type="datetime_immutable"
+        />
+
+    </entity>
+
+</doctrine-mapping>

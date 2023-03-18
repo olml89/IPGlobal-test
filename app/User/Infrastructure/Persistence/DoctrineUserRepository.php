@@ -6,6 +6,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use olml89\IPGlobalTest\User\Domain\Email\Email;
 use olml89\IPGlobalTest\User\Domain\User;
 use olml89\IPGlobalTest\User\Domain\UserRepository;
 use olml89\IPGlobalTest\User\Domain\UserStorageException;
@@ -18,6 +19,11 @@ final class DoctrineUserRepository extends EntityRepository implements UserRepos
             $entityManager,
             new ClassMetadata(User::class),
         );
+    }
+
+    public function getByEmail(Email $email): ?User
+    {
+        return $this->getEntityManager()->getRepository(User::class)->findOneBy(['email' => $email]);
     }
 
     /**

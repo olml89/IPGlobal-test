@@ -4,6 +4,7 @@ use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\DiffCommand;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\MigrateCommand;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\AutoIncrementalIdType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\EmailType;
+use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\Md5HashType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\PasswordType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\StringValueObjectType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\UrlType;
@@ -11,6 +12,8 @@ use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\UuidType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\ZipCodeType;
 use olml89\IPGlobalTest\Post\Domain\PostRepository;
 use olml89\IPGlobalTest\Post\Infrastructure\Persistence\DoctrinePostRepository;
+use olml89\IPGlobalTest\Security\Domain\TokenRepository;
+use olml89\IPGlobalTest\Security\Infrastructure\Persistence\DoctrineTokenRepository;
 use olml89\IPGlobalTest\User\Domain\UserRepository;
 use olml89\IPGlobalTest\User\Infrastructure\Persistence\DoctrineUserRepository;
 
@@ -29,6 +32,7 @@ return [
     'mappings' => [
         app_path('Post/Infrastructure/Persistence'),
         app_path('User/Infrastructure/Persistence'),
+        app_path('Security/Infrastructure/Persistence'),
     ],
 
     'proxies' => [
@@ -52,11 +56,13 @@ return [
         UrlType::class,
         ZipCodeType::class,
         PasswordType::class,
+        Md5HashType::class,
     ],
 
     'repositories' => [
         PostRepository::class => DoctrinePostRepository::class,
         UserRepository::class => DoctrineUserRepository::class,
+        TokenRepository::class => DoctrineTokenRepository::class,
     ],
 
     'migrations' => [
