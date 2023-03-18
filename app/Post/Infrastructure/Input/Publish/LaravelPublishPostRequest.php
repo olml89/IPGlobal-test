@@ -42,7 +42,6 @@ class LaravelPublishPostRequest extends FormRequest
         $validatedData = parent::validated($key, $default);
 
         return new PublishData(
-            user_id: $validatedData['user_id'],
             title: $validatedData['title'],
             body: $validatedData['body'],
         );

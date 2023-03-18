@@ -4,14 +4,14 @@ namespace Database\Factories;
 
 use Database\Factories\ValueObjects\EmailFactory;
 use Database\Factories\ValueObjects\UrlFactory;
+use Database\Factories\ValueObjects\UuidFactory;
 use Database\Factories\ValueObjects\ZipCodeFactory;
 use Faker\Generator as Faker;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\AutoIncrementalId\AutoIncrementalId;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\Url;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
-use olml89\IPGlobalTest\User\Domain\Address\Company;
 use olml89\IPGlobalTest\User\Domain\Address\Geolocation\Geolocation;
+use olml89\IPGlobalTest\User\Domain\Company;
 use olml89\IPGlobalTest\User\Domain\User;
 use ReflectionException;
 
@@ -19,6 +19,7 @@ class UserFactory
 {
     public function __construct(
         private readonly Faker $faker,
+        private readonly UuidFactory $uuidFactory,
         private readonly EmailFactory $emailFactory,
         private readonly ZipCodeFactory $zipCodeFactory,
         private readonly UrlFactory $urlFactory,
@@ -27,10 +28,10 @@ class UserFactory
     /**
      * @throws ReflectionException
      */
-    public function createWithId(int $id): User
+    public function create(): User
     {
         return new User(
-            id: new AutoIncrementalId($id),
+            id: $this->uuidFactory->create(),
             name: new StringValueObject($this->faker->name()),
             username: new StringValueObject($this->faker->name()),
             email: $this->emailFactory->create(),

@@ -3,29 +3,53 @@
 namespace olml89\IPGlobalTest\Post\Application\Publish;
 
 use Database\Factories\UserFactory;
-use Faker\Generator as Faker;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\AutoIncrementalId\AutoIncrementalId;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\UuidGenerator;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\ValueObjectException;
 use olml89\IPGlobalTest\Post\Application\PostResult;
 use olml89\IPGlobalTest\Post\Domain\Post;
+use olml89\IPGlobalTest\Post\Domain\PostCreationException;
+use olml89\IPGlobalTest\Post\Domain\PostRepository;
+use olml89\IPGlobalTest\Post\Domain\PostStorageException;
+use ReflectionException;
 
 final class PublishUseCase
 {
     public function __construct(
-        private readonly Faker $faker,
+        private readonly UuidGenerator $uuidGenerator,
+        private readonly PostRepository $postRepository,
         private readonly UserFactory $userFactory,
     ) {}
 
-    public function publish(PublishData $publishData): PostResult
+    /**
+     * @throws ReflectionException | ValueObjectException
+     */
+    private function createPost(PublishData $publishData): Post
     {
-        // We simulate the creation of an AutoIncrementalId by the database
-        $post = new Post(
-            id: new AutoIncrementalId($this->faker->randomNumber()),
-            user: $this->userFactory->createWithId($publishData->user_id),
+        // We create an authentic UUID as an id, but we simulate the retrieval of the current user
+        // of the session or the API token
+        return new Post(
+            id: Uuid::random($this->uuidGenerator),
+            user: $this->userFactory->create(),
             title: new StringValueObject($publishData->title),
             body: new StringValueObject($publishData->body),
         );
+    }
 
-        return new PostResult($post);
+    /**
+     * @throws PostCreationException | PostStorageException
+     */
+    public function publish(PublishData $publishData): PostResult
+    {
+        try {
+            $post = $this->createPost($publishData);
+            $this->postRepository->save($post);
+
+            return new PostResult($post);
+        }
+        catch (ReflectionException|ValueObjectException $valueObjectException) {
+            throw new PostCreationException($valueObjectException->getMessage(), $valueObjectException);
+        }
     }
 }
