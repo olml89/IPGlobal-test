@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+
+    <embeddable name="olml89\IPGlobalTest\User\Domain\Address\Address">
+
+        <field
+            name="street"
+            column="street"
+            type="string"
+            column-definition="VARCHAR(100) NOT NULL"
+        />
+
+        <field name="suite"
+               column="suite"
+               type="string"
+               column-definition="VARCHAR(100) NOT NULL"
+        />
+
+        <field name="city"
+               column="city"
+               type="string"
+               column-definition="VARCHAR(100) NOT NULL"
+        />
+
+        <field name="zipCode"
+               column="zipcode"
+               column-definition="VARCHAR(20) NOT NULL"
+        />
+
+        <embedded name="geoLocation"
+                  class="olml89\IPGlobalTest\User\Domain\Address\Geolocation\Geolocation"
+        />
+
+    </embeddable>
+
+</doctrine-mapping>

@@ -2,6 +2,8 @@
 
 namespace olml89\IPGlobalTest\Common\Infrastructure\Laravel\Console;
 
+use Illuminate\Config\Repository as Config;
+use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -20,7 +22,13 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $appCommands = $this->app[Config::class]->get('commands');
+
+        foreach($appCommands as $commandClass) {
+            Artisan::starting(function (Artisan $artisan) use ($commandClass) {
+                $artisan->resolve($commandClass);
+            });
+        }
 
         require base_path('routes/console.php');
     }

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\User\Domain\Address;
+namespace olml89\IPGlobalTest\User\Domain;
 
 use olml89\IPGlobalTest\Common\Domain\JsonSerializableObject;
 

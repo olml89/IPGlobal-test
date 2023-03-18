@@ -5,14 +5,14 @@ namespace olml89\IPGlobalTest\User\Domain;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\AutoIncrementalId\AutoIncrementalId;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\Url;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
-use olml89\IPGlobalTest\User\Domain\Address\Company;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
 
 final class User
 {
     public function __construct(
-        private readonly AutoIncrementalId $id,
+        private readonly Uuid $id,
         private readonly StringValueObject $name,
         private readonly StringValueObject $username,
         private readonly Email $email,
@@ -22,7 +22,7 @@ final class User
         private readonly Company $company,
     ) {}
 
-    public function id(): AutoIncrementalId
+    public function id(): Uuid
     {
         return $this->id;
     }

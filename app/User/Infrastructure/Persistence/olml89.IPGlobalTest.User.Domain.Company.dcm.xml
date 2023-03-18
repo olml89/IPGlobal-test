@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+
+    <embeddable name="olml89\IPGlobalTest\User\Domain\Company">
+
+        <field
+            name="name"
+            column="name"
+            type="string"
+            column-definition="VARCHAR(100) NOT NULL"
+        />
+
+        <field
+            name="catchphrase"
+            column="catchphrase"
+            type="string"
+            column-definition="VARCHAR(100) NOT NULL"
+        />
+
+        <field
+            name="bs"
+            column="bs"
+            type="string"
+            column-definition="VARCHAR(100) NOT NULL"
+        />
+
+    </embeddable>
+
+</doctrine-mapping>
