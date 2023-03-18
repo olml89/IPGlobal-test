@@ -2,7 +2,7 @@
 
 namespace olml89\IPGlobalTest\Common\Domain\ValueObjects;
 
-use DomainException;
+use olml89\IPGlobalTest\Common\Domain\Exceptions\DomainException;
 
 abstract class ValueObjectException extends DomainException
 {

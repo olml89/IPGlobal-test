@@ -3,8 +3,11 @@
 namespace olml89\IPGlobalTest\Common\Infrastructure\Laravel\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use olml89\IPGlobalTest\Common\Domain\Exceptions\DomainException;
 use olml89\IPGlobalTest\Common\Domain\Exceptions\NotFoundException;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\ValueObjectException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -51,18 +54,34 @@ class Handler extends ExceptionHandler
     /**
      * @throws Throwable
      */
+    private function optionallyReportInfrastructureExceptionFromDomainException(DomainException $e): void
+    {
+        $infrastructureException = $e->getInfrastructureException();
+
+        if (!is_null($infrastructureException)) {
+            $this->report($infrastructureException);
+        }
+    }
+
+    /**
+     * @throws Throwable
+     */
     protected function prepareException(Throwable $e): Throwable
     {
         // When we get to this point, the NotFoundException from the Domain has already been logged.
         // This also logs the previous underlying Infrastructure exception.
         if ($e instanceof NotFoundException) {
-            $infrastructureException = $e->getInfrastructureException();
-
-            if (!is_null($infrastructureException)) {
-                $this->report($infrastructureException);
-            }
+            $this->optionallyReportInfrastructureExceptionFromDomainException($e);
 
             $e = new NotFoundHttpException($e->getMessage());
+        }
+
+        // This converts value object validation exceptions to a 422 Unprocessable http response,
+        // without having to use the ValidationException used by Laravel (binded to the Validator)
+        if ($e instanceof ValueObjectException) {
+            $this->optionallyReportInfrastructureExceptionFromDomainException($e);
+
+            $e = new UnprocessableEntityHttpException($e->getMessage());
         }
 
         return parent::prepareException($e);

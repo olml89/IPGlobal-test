@@ -7,7 +7,7 @@ use Throwable;
 
 abstract class DomainException extends PhpDomainException
 {
-    public function __construct(string $message, ?Throwable $infrastructureException)
+    public function __construct(string $message, ?Throwable $infrastructureException = null)
     {
         parent::__construct(
             message: $message,
