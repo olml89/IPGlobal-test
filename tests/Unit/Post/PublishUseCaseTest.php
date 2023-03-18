@@ -2,15 +2,19 @@
 
 namespace Tests\Unit\Post;
 
+use Database\Factories\UserFactory;
 use Faker\Generator as Faker;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\AutoIncrementalId\InvalidAutoIncrementalIdException;
+use Mockery\MockInterface;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\InvalidUuidException;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\UuidGenerator;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishData;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishUseCase;
+use olml89\IPGlobalTest\Post\Domain\PostRepository;
+use olml89\IPGlobalTest\Post\Domain\PostStorageException;
 use Tests\TestCase;
 
 final class PublishUseCaseTest extends TestCase
 {
-    private readonly PublishUseCase $publishUseCase;
     private readonly Faker $faker;
 
     /**
@@ -21,33 +25,61 @@ final class PublishUseCaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->publishUseCase = $this->app->get(PublishUseCase::class);
         $this->faker = $this->app->get(Faker::class);
     }
 
-    public function test_that_invalid_user_id_generates_error(): void
+    /**
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    private function generatePublishUseCaseWithUuid(string $uuid): PublishUseCase
     {
-        $publishData = new PublishData(
-            user_id: 0,
-            title: $this->faker->title(),
-            body: $this->faker->text(),
+        $uuidGenerator = $this->mock(UuidGenerator::class, function (MockInterface $mock) use($uuid): void {
+            $mock->shouldReceive('random')->once()->andReturn($uuid);
+        });
+
+        return new PublishUseCase(
+            uuidGenerator: $uuidGenerator,
+            postRepository: $this->app->get(PostRepository::class),
+            userFactory: $this->app->get(UserFactory::class),
         );
-
-        $this->expectException(InvalidAutoIncrementalIdException::class);
-
-        $this->publishUseCase->publish($publishData);
     }
 
-    public function test_result_includes_post_id(): void
+    /**
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function test_that_invalid_id_generates_error(): void
     {
+        $invalidUuid = 'invalid';
+        $publishUseCase = $this->generatePublishUseCaseWithUuid($invalidUuid);
+
         $publishData = new PublishData(
-            user_id: $this->faker->randomNumber(),
             title: $this->faker->title(),
             body: $this->faker->text(),
         );
 
-        $publishResult = $this->publishUseCase->publish($publishData);
+        $this->expectException(PostStorageException::class);
 
-        $this->assertIsInt($publishResult->id);
+        $publishUseCase->publish($publishData);
+    }
+
+    /**
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function test_result_includes_post_id(): void
+    {
+        $uuid = $this->faker->uuid();
+        $publishUseCase = $this->generatePublishUseCaseWithUuid($uuid);
+
+        $publishData = new PublishData(
+            title: $this->faker->title(),
+            body: $this->faker->text(),
+        );
+
+        $publishResult = $publishUseCase->publish($publishData);;
+
+        $this->assertEquals($uuid, $publishResult->id);
     }
 }
