@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use olml89\IPGlobalTest\Post\Infrastructure\Input\Get\LaravelGetController as LaravelGetPostController;
-use olml89\IPGlobalTest\Post\Infrastructure\Input\Get\LaravelGetRemoteController as LaravelGetRemotePostController;
-use olml89\IPGlobalTest\Post\Infrastructure\Input\Publish\LaravelPublishController as LaravelPublishPostController;
-use olml89\IPGlobalTest\Security\Infrastructure\Input\LaravelAuthenticationController;
+use olml89\IPGlobalTest\Post\Infrastructure\Http\Get\LaravelGetController as LaravelGetPostController;
+use olml89\IPGlobalTest\Post\Infrastructure\Http\Get\LaravelGetRemoteController as LaravelGetRemotePostController;
+use olml89\IPGlobalTest\Post\Infrastructure\Http\Publish\LaravelPublishController as LaravelPublishPostController;
+use olml89\IPGlobalTest\Security\Infrastructure\Http\LaravelAuthenticationController;
 
 /*
 |--------------------------------------------------------------------------

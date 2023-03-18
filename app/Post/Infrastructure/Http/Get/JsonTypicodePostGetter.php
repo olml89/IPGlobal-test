@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\Post\Infrastructure\Input\Get;
+namespace olml89\IPGlobalTest\Post\Infrastructure\Http\Get;
 
 use Database\Factories\ValueObjects\PasswordFactory;
 use GuzzleHttp\Exception\GuzzleException;

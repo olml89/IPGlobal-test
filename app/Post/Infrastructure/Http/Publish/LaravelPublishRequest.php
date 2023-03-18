@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\Post\Infrastructure\Input\Publish;
+namespace olml89\IPGlobalTest\Post\Infrastructure\Http\Publish;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

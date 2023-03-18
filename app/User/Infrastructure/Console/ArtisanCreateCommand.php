@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\User\Infrastructure\Input\Create;
+namespace olml89\IPGlobalTest\User\Infrastructure\Console;
 
 use Illuminate\Console\Command;
 use olml89\IPGlobalTest\User\Application\Create\CreateData as CreateUserData;

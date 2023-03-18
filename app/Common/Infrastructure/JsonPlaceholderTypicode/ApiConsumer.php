@@ -4,7 +4,7 @@ namespace olml89\IPGlobalTest\Common\Infrastructure\JsonPlaceholderTypicode;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use olml89\IPGlobalTest\Post\Infrastructure\Input\Get\JsonTypicodeGetPostGetter;
+use olml89\IPGlobalTest\Post\Infrastructure\Http\Get\JsonTypicodeGetPostGetter;
 use Psr\Http\Message\ResponseInterface;
 
 final class ApiConsumer

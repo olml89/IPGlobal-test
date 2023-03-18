@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\Security\Infrastructure\Input;
+namespace olml89\IPGlobalTest\Security\Infrastructure\Http;
 
 use Illuminate\Http\JsonResponse;
 use olml89\IPGlobalTest\Security\Application\AuthenticateUseCase;
