@@ -27,7 +27,7 @@ final class AuthenticateUseCase
     /**
      * @throws InvalidEmailException | UserNotFoundException | TokenStorageException
      */
-    public function authorize(AuthenticationData $authorizeData): AuthenticationResult
+    public function authenticate(AuthenticationData $authorizeData): AuthenticationResult
     {
         $email = new Email($authorizeData->email, $this->emailValidator);
         $user = $this->userFinder->findByEmail($email);

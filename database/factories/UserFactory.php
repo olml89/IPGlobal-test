@@ -9,7 +9,6 @@ use Database\Factories\ValueObjects\UuidFactory;
 use Database\Factories\ValueObjects\ZipCodeFactory;
 use Faker\Generator as Faker;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
 use olml89\IPGlobalTest\User\Domain\Address\Geolocation\Geolocation;
 use olml89\IPGlobalTest\User\Domain\Company;

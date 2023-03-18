@@ -16,8 +16,6 @@ final class UserNotFoundException extends NotFoundException
 
     public static function invalidPassword(): self
     {
-        return new self(
-            sprintf('The provided password is invalid')
-        );
+        return new self('The provided password is invalid');
     }
 }

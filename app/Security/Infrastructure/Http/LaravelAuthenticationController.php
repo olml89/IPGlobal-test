@@ -11,7 +11,7 @@ use olml89\IPGlobalTest\User\Domain\UserNotFoundException;
 final class LaravelAuthenticationController
 {
     public function __construct(
-        private readonly AuthenticateUseCase $authorizeUseCase,
+        private readonly AuthenticateUseCase $authenticateUseCase,
     ) {}
 
     /**
@@ -19,7 +19,7 @@ final class LaravelAuthenticationController
      */
     public function __invoke(LaravelAuthenticationRequest $request): JsonResponse
     {
-        $result = $this->authorizeUseCase->authorize($request->validated());
+        $result = $this->authenticateUseCase->authenticate($request->validated());
 
         return new JsonResponse(
             data: $result,
