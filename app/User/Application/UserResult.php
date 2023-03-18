@@ -3,10 +3,10 @@
 namespace olml89\IPGlobalTest\User\Application;
 
 use olml89\IPGlobalTest\Common\Domain\JsonSerializableObject;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\Url;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
 use olml89\IPGlobalTest\User\Domain\Company;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
+use olml89\IPGlobalTest\User\Domain\Url\Url;
 use olml89\IPGlobalTest\User\Domain\User;
 
 final class UserResult extends JsonSerializableObject

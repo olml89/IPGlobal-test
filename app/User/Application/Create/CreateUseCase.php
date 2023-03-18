@@ -3,8 +3,6 @@
 namespace olml89\IPGlobalTest\User\Application\Create;
 
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\Url;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\UrlValidator;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\UuidGenerator;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\ValueObjectException;
@@ -16,6 +14,8 @@ use olml89\IPGlobalTest\User\Domain\Address\ZipCode\ZipCodeValidator;
 use olml89\IPGlobalTest\User\Domain\Company;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
 use olml89\IPGlobalTest\User\Domain\Email\EmailValidator;
+use olml89\IPGlobalTest\User\Domain\Url\Url;
+use olml89\IPGlobalTest\User\Domain\Url\UrlValidator;
 use olml89\IPGlobalTest\User\Domain\User;
 use olml89\IPGlobalTest\User\Domain\UserCreationException;
 use olml89\IPGlobalTest\User\Domain\UserRepository;

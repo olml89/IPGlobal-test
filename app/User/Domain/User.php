@@ -2,12 +2,11 @@
 
 namespace olml89\IPGlobalTest\User\Domain;
 
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\AutoIncrementalId\AutoIncrementalId;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\Url;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
+use olml89\IPGlobalTest\User\Domain\Url\Url;
 
 class User
 {

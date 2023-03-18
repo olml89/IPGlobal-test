@@ -2,7 +2,7 @@
 
 namespace Database\Factories\ValueObjects;
 
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\Url;
+use olml89\IPGlobalTest\User\Domain\Url\Url;
 use ReflectionClass;
 use ReflectionException;
 

@@ -3,7 +3,7 @@
 namespace olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\Url;
+use olml89\IPGlobalTest\User\Domain\Url\Url;
 
 class UrlType extends ValidatedStringValueObjectType
 {

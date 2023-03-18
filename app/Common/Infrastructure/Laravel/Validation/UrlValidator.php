@@ -2,7 +2,7 @@
 
 namespace olml89\IPGlobalTest\Common\Infrastructure\Laravel\Validation;
 
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\UrlValidator as UrlValidatorContract;
+use olml89\IPGlobalTest\User\Domain\Url\UrlValidator as UrlValidatorContract;
 
 final class UrlValidator extends Validator implements UrlValidatorContract
 {
