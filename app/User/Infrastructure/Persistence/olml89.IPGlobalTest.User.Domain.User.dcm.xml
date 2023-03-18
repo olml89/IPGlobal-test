@@ -22,20 +22,19 @@
         <field
             name="name"
             column="name"
-            type="string"
+            type="StringValueObject"
             column-definition="VARCHAR(100) NOT NULL"
         />
 
         <field name="username"
                column="username"
-               type="string"
+               type="StringValueObject"
                column-definition="VARCHAR(100) NOT NULL"
         />
 
         <field name="email"
                column="email"
-               type="string"
-               column-definition="VARCHAR(320) NOT NULL"
+               type="email"
         />
 
         <embedded name="address"
@@ -44,14 +43,13 @@
 
         <field name="phone"
                column="phone"
-               type="string"
+               type="StringValueObject"
                column-definition="VARCHAR(100) NOT NULL"
         />
 
         <field name="website"
                column="website"
-               type="string"
-               column-definition="VARCHAR(2048) NOT NULL"
+               type="url"
         />
 
         <embedded name="company"

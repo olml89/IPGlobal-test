@@ -28,7 +28,7 @@
 
         <field name="zipCode"
                column="zipcode"
-               column-definition="VARCHAR(20) NOT NULL"
+               type="zipcode"
         />
 
         <embedded name="geoLocation"

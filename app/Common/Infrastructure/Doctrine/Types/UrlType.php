@@ -3,11 +3,11 @@
 namespace olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\Url;
 
-class UuidType extends ValidatedStringValueObjectType
+class UrlType extends ValidatedStringValueObjectType
 {
-    private const NAME = 'uuid';
+    private const NAME = 'url';
 
     protected function getChildTypeName(): string
     {
@@ -16,11 +16,12 @@ class UuidType extends ValidatedStringValueObjectType
 
     protected function getChildClassName(): string
     {
-        return Uuid::class;
+        return Url::class;
     }
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getGuidTypeDeclarationSQL($column);
+        return 'VARCHAR(2048)';
     }
 }
+

@@ -3,7 +3,11 @@
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\DiffCommand;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\MigrateCommand;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\AutoIncrementalIdType;
+use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\EmailType;
+use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\StringValueObjectType;
+use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\UrlType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\UuidType;
+use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\ZipCodeType;
 use olml89\IPGlobalTest\Post\Domain\PostRepository;
 use olml89\IPGlobalTest\Post\Infrastructure\Persistence\DoctrinePostRepository;
 use olml89\IPGlobalTest\User\Domain\UserRepository;
@@ -41,7 +45,11 @@ return [
 
     'custom_types' => [
         AutoIncrementalIdType::class,
+        StringValueObjectType::class,
         UuidType::class,
+        EmailType::class,
+        UrlType::class,
+        ZipCodeType::class,
     ],
 
     'repositories' => [

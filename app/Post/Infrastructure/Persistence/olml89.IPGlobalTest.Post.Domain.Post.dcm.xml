@@ -31,19 +31,20 @@
         <field
             name="title"
             column="title"
-            type="string"
+            type="StringValueObject"
             column-definition="VARCHAR(100) NOT NULL"
         />
 
         <field
             name="body"
             column="body"
-            type="text"
+            type="StringValueObject"
+            column-definition="TEXT"
         />
 
         <field name="postedAt"
                column="posted_at"
-               type="datetime"
+               type="datetime_immutable"
         />
 
     </entity>

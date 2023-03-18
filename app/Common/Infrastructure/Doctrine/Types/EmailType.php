@@ -3,11 +3,11 @@
 namespace olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
+use olml89\IPGlobalTest\User\Domain\Email\Email;
 
-class UuidType extends ValidatedStringValueObjectType
+class EmailType extends ValidatedStringValueObjectType
 {
-    private const NAME = 'uuid';
+    private const NAME = 'email';
 
     protected function getChildTypeName(): string
     {
@@ -16,11 +16,11 @@ class UuidType extends ValidatedStringValueObjectType
 
     protected function getChildClassName(): string
     {
-        return Uuid::class;
+        return Email::class;
     }
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return $platform->getGuidTypeDeclarationSQL($column);
+        return 'VARCHAR(320)';
     }
 }
