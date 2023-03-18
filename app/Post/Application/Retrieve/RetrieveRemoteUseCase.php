@@ -2,6 +2,7 @@
 
 namespace olml89\IPGlobalTest\Post\Application\Retrieve;
 
+use olml89\IPGlobalTest\Post\Domain\PostNotFoundException;
 use olml89\IPGlobalTest\Post\Application\PostResult;
 use olml89\IPGlobalTest\Post\Infrastructure\Input\Get\JsonTypicodePostGetter;
 
@@ -11,6 +12,9 @@ final class RetrieveRemoteUseCase
         private readonly JsonTypicodePostGetter $remotePostGetter,
     ) {}
 
+    /**
+     * @throws PostNotFoundException
+     */
     public function retrieve(int $id): PostResult
     {
         $post = $this->remotePostGetter->get($id);
