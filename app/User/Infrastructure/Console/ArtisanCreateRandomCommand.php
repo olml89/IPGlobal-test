@@ -4,6 +4,8 @@ namespace olml89\IPGlobalTest\User\Infrastructure\Console;
 
 use Illuminate\Console\Command;
 use olml89\IPGlobalTest\User\Application\Create\CreateRandomUseCase as CreateRandom;
+use olml89\IPGlobalTest\User\Domain\UserCreationException;
+use olml89\IPGlobalTest\User\Domain\UserStorageException;
 
 
 final class ArtisanCreateRandomCommand extends Command
@@ -24,6 +26,8 @@ final class ArtisanCreateRandomCommand extends Command
 
     /**
      * Execute the console command.
+     *
+     * @throws UserCreationException | UserStorageException
      */
     public function handle(CreateRandom $createUser): void
     {

@@ -5,6 +5,7 @@ namespace olml89\IPGlobalTest\User\Infrastructure\Console;
 use Illuminate\Console\Command;
 use olml89\IPGlobalTest\User\Application\Create\CreateData as CreateUserData;
 use olml89\IPGlobalTest\User\Application\Create\CreateUseCase as CreateUser;
+use olml89\IPGlobalTest\User\Domain\UserCreationException;
 
 final class ArtisanCreateCommand extends Command
 {
@@ -38,12 +39,9 @@ final class ArtisanCreateCommand extends Command
      */
     protected $description = 'Creates a user on the database.';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle(CreateUser $createUser): void
+    private function getInputData(): CreateUserData
     {
-        $createUserData = new CreateUserData(
+        return new CreateUserData(
             password: $this->argument('password'),
             name: $this->argument('name'),
             username: $this->argument('username'),
@@ -60,7 +58,16 @@ final class ArtisanCreateCommand extends Command
             company_catchphrase: $this->argument('company_catchphrase'),
             company_bs: $this->argument('company_bs'),
         );
+    }
 
+    /**
+     * Execute the console command.
+     *
+     * @throws UserCreationException | UserStorageException
+     */
+    public function handle(CreateUser $createUser): void
+    {
+        $createUserData = $this->getInputData();
         $result = $createUser->create($createUserData);
 
         $this->output->success('User created successfully');

@@ -3,10 +3,10 @@
 namespace olml89\IPGlobalTest\User\Application\Create;
 
 use Database\Factories\UserFactory;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\ValueObjectException;
 use olml89\IPGlobalTest\User\Application\UserResult;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
 use olml89\IPGlobalTest\User\Domain\Email\EmailValidator;
-use olml89\IPGlobalTest\User\Domain\Email\InvalidEmailException;
 use olml89\IPGlobalTest\User\Domain\Password\Hasher;
 use olml89\IPGlobalTest\User\Domain\Password\Password;
 use olml89\IPGlobalTest\User\Domain\UserCreationException;
@@ -24,7 +24,7 @@ final class CreateRandomUseCase
     ) {}
 
     /**
-     * @throws InvalidEmailException | UserCreationException | UserStorageException
+     * @throws UserCreationException | UserStorageException
      */
     public function create(string $email, string $password): UserResult
     {
@@ -37,7 +37,7 @@ final class CreateRandomUseCase
 
             return new UserResult($user);
         }
-        catch (ReflectionException $e) {
+        catch (ReflectionException|ValueObjectException $e) {
             throw new UserCreationException($e->getMessage(), $e);
         }
     }

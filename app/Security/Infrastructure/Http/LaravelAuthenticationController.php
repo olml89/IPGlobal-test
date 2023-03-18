@@ -4,6 +4,9 @@ namespace olml89\IPGlobalTest\Security\Infrastructure\Http;
 
 use Illuminate\Http\JsonResponse;
 use olml89\IPGlobalTest\Security\Application\AuthenticateUseCase;
+use olml89\IPGlobalTest\Security\Domain\TokenStorageException;
+use olml89\IPGlobalTest\User\Domain\Email\InvalidEmailException;
+use olml89\IPGlobalTest\User\Domain\UserNotFoundException;
 
 final class LaravelAuthenticationController
 {
@@ -11,6 +14,9 @@ final class LaravelAuthenticationController
         private readonly AuthenticateUseCase $authorizeUseCase,
     ) {}
 
+    /**
+     * @throws InvalidEmailException | UserNotFoundException | TokenStorageException
+     */
     public function __invoke(LaravelAuthenticationRequest $request): JsonResponse
     {
         $result = $this->authorizeUseCase->authorize($request->validated());

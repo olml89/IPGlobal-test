@@ -4,7 +4,9 @@ namespace olml89\IPGlobalTest\Post\Infrastructure\Http\Get;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\InvalidUuidException;
 use olml89\IPGlobalTest\Post\Application\Retrieve\RetrieveUseCase as RetrievePost;
+use olml89\IPGlobalTest\Post\Domain\PostNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 
 final class LaravelGetController
@@ -13,6 +15,9 @@ final class LaravelGetController
         private readonly RetrievePost $retrievePost,
     ) {}
 
+    /**
+     * @throws InvalidUuidException | PostNotFoundException
+     */
     public function __invoke(string $id, Request $request): JsonResponse
     {
         $result = $this->retrievePost->retrieve($id);
