@@ -14,7 +14,7 @@ use olml89\IPGlobalTest\Common\Infrastructure\JsonPlaceholderTypicode\ResponseDa
 use olml89\IPGlobalTest\Common\Infrastructure\Ramsey\UuidGenerator;
 use olml89\IPGlobalTest\Post\Domain\Post;
 use olml89\IPGlobalTest\Post\Domain\RemotePostRetriever;
-use olml89\IPGlobalTest\Post\Domain\RemotePostRetrievingException;
+use olml89\IPGlobalTest\Post\Domain\PostNotFoundException;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
 use olml89\IPGlobalTest\User\Domain\Address\Geolocation\Geolocation;
 use olml89\IPGlobalTest\User\Domain\Address\ZipCode\ZipCode;
@@ -83,7 +83,7 @@ final class JsonTypicodePostGetter implements RemotePostRetriever
             );
         }
         catch (GuzzleException $e) {
-            throw new RemotePostRetrievingException($id, $e);
+            throw new PostNotFoundException((string)$id, $e);
         }
     }
 }

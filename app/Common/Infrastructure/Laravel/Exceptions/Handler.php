@@ -56,7 +56,12 @@ class Handler extends ExceptionHandler
         // When we get to this point, the NotFoundException from the Domain has already been logged.
         // This also logs the previous underlying Infrastructure exception.
         if ($e instanceof NotFoundException) {
-            $this->report($e->getInfrastructureException());
+            $infrastructureException = $e->getInfrastructureException();
+
+            if (!is_null($infrastructureException)) {
+                $this->report($infrastructureException);
+            }
+
             $e = new NotFoundHttpException($e->getMessage());
         }
 

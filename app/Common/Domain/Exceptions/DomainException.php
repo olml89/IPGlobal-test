@@ -7,7 +7,7 @@ use Throwable;
 
 abstract class DomainException extends PhpDomainException
 {
-    public function __construct(string $message, Throwable $infrastructureException)
+    public function __construct(string $message, ?Throwable $infrastructureException)
     {
         parent::__construct(
             message: $message,
@@ -15,7 +15,7 @@ abstract class DomainException extends PhpDomainException
         );
     }
 
-    public function getInfrastructureException(): Throwable
+    public function getInfrastructureException(): ?Throwable
     {
         return $this->getPrevious();
     }

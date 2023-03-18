@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use olml89\IPGlobalTest\Post\Domain\Post;
 use olml89\IPGlobalTest\Post\Domain\PostRepository;
 use olml89\IPGlobalTest\Post\Domain\PostStorageException;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 
 final class DoctrinePostRepository extends EntityRepository implements PostRepository
 {
@@ -18,6 +19,11 @@ final class DoctrinePostRepository extends EntityRepository implements PostRepos
             $entityManager,
             new ClassMetadata(Post::class),
         );
+    }
+
+    public function get(Uuid $id): ?Post
+    {
+        return $this->getEntityManager()->getRepository(Post::class)->find($id);
     }
 
     /**

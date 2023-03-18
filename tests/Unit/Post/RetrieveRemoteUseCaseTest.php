@@ -11,7 +11,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use olml89\IPGlobalTest\Post\Application\Retrieve\RetrieveRemoteUseCase;
-use olml89\IPGlobalTest\Post\Domain\RemotePostRetrievingException;
+use olml89\IPGlobalTest\Post\Domain\PostNotFoundException;
 use Tests\TestCase;
 use Tests\Unit\Post\JsonPlaceholderTypicode\PostDataGenerator;
 use Tests\Unit\Post\JsonPlaceholderTypicode\UserDataGenerator;
@@ -54,7 +54,7 @@ final class RetrieveRemoteUseCaseTest extends TestCase
             )
         );
 
-        $this->expectException(RemotePostRetrievingException::class);
+        $this->expectException(PostNotFoundException::class);
 
         $this->retrieveUseCase->retrieve($this->faker->randomNumber());
     }
@@ -69,7 +69,7 @@ final class RetrieveRemoteUseCaseTest extends TestCase
             )
         );
 
-        $this->expectException(RemotePostRetrievingException::class);
+        $this->expectException(PostNotFoundException::class);
 
         $this->retrieveUseCase->retrieve($this->faker->randomNumber());
     }

@@ -5,7 +5,7 @@ namespace olml89\IPGlobalTest\Post\Domain;
 interface RemotePostRetriever
 {
     /**
-     * @throws RemotePostRetrievingException
+     * @throws PostNotFoundException
      */
     public function get(int $id): Post;
 }
