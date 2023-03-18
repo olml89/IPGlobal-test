@@ -10,6 +10,9 @@ final class Geolocation extends JsonSerializableObject
     public readonly float $latitude;
     public readonly float $longitude;
 
+    /**
+     * @throws InvalidGeolocationException
+     */
     public function __construct(float $latitude, float $longitude)
     {
         $this->ensureValidLatitude($latitude);
@@ -19,6 +22,9 @@ final class Geolocation extends JsonSerializableObject
         $this->longitude = $longitude;
     }
 
+    /**
+     * @throws InvalidGeolocationException
+     */
     private function ensureValidLatitude(float $latitude): void
     {
         $maxValue = 90.0;
@@ -28,6 +34,9 @@ final class Geolocation extends JsonSerializableObject
         }
     }
 
+    /**
+     * @throws InvalidGeolocationException
+     */
     private function ensureValidLongitude(float $longitude): void
     {
         $maxValue = 180.0;

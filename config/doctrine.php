@@ -2,8 +2,12 @@
 
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\DiffCommand;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\MigrateCommand;
+use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\AutoIncrementalIdType;
+use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\UuidType;
 use olml89\IPGlobalTest\Post\Domain\PostRepository;
 use olml89\IPGlobalTest\Post\Infrastructure\Persistence\DoctrinePostRepository;
+use olml89\IPGlobalTest\User\Domain\UserRepository;
+use olml89\IPGlobalTest\User\Infrastructure\Persistence\DoctrineUserRepository;
 
 return [
 
@@ -35,10 +39,14 @@ return [
 
     'filters' => [],
 
-    'custom_types' => [],
+    'custom_types' => [
+        AutoIncrementalIdType::class,
+        UuidType::class,
+    ],
 
     'repositories' => [
         PostRepository::class => DoctrinePostRepository::class,
+        UserRepository::class => DoctrineUserRepository::class,
     ],
 
     'migrations' => [

@@ -6,6 +6,9 @@ use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
 
 final class ZipCode extends StringValueObject
 {
+    /**
+     * @throws InvalidZipCodeException
+     */
     public function __construct(string $zipCode, ZipCodeValidator $validator)
     {
         $this->ensureIsAValidZipCode($zipCode, $validator);
@@ -13,6 +16,9 @@ final class ZipCode extends StringValueObject
         parent::__construct($zipCode);
     }
 
+    /**
+     * @throws InvalidZipCodeException
+     */
     private function ensureIsAValidZipCode(string $zipCode, ZipCodeValidator $validator): void
     {
         if (!$validator->isValid($zipCode)) {
