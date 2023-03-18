@@ -24,7 +24,6 @@ class LaravelPublishPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', 'min:1'],
             'title' => ['required', 'string'],
             'body' => ['required', 'string'],
         ];
