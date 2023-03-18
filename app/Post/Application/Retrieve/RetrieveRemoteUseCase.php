@@ -5,7 +5,7 @@ namespace olml89\IPGlobalTest\Post\Application\Retrieve;
 use olml89\IPGlobalTest\Post\Application\PostResult;
 use olml89\IPGlobalTest\Post\Infrastructure\Input\Get\JsonTypicodePostGetter;
 
-final class RetrieveUseCase
+final class RetrieveRemoteUseCase
 {
     public function __construct(
         private readonly JsonTypicodePostGetter $remotePostGetter,

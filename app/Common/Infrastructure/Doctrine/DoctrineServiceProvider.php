@@ -59,7 +59,10 @@ final class DoctrineServiceProvider extends ServiceProvider
         /** @var class-string<Type> $typeClass */
         foreach ($customTypes as $typeClass) {
             $type = new $typeClass();
-            Type::getTypeRegistry()->register($type->getName(), $type);
+
+            if (!Type::getTypeRegistry()->has($type->getName())) {
+                Type::getTypeRegistry()->register($type->getName(), $type);
+            }
         }
     }
 

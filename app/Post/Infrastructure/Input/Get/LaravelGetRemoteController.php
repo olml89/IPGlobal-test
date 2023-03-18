@@ -4,10 +4,10 @@ namespace olml89\IPGlobalTest\Post\Infrastructure\Input\Get;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use olml89\IPGlobalTest\Post\Application\Retrieve\RetrieveUseCase as RetrievePost;
+use olml89\IPGlobalTest\Post\Application\Retrieve\RetrieveRemoteUseCase as RetrievePost;
 use Symfony\Component\HttpFoundation\Response;
 
-final class LaravelGetController
+final class LaravelGetRemoteController
 {
     public function __construct(
         private readonly RetrievePost $retrievePost,

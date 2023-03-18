@@ -50,6 +50,14 @@ final class PostDataGenerator implements Stringable
         return $this;
     }
 
+    public function withTitle(string $title): self
+    {
+        $this->title = $title;
+        $this->setPostData();
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return json_encode($this->postData);

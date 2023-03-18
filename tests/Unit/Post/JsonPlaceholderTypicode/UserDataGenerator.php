@@ -71,6 +71,14 @@ final class UserDataGenerator implements Stringable
         return $this;
     }
 
+    public function withName(string $name): self
+    {
+        $this->name = $name;
+        $this->setUserData();
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return json_encode($this->userData);

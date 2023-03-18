@@ -7,25 +7,36 @@ use olml89\IPGlobalTest\Common\Domain\ValueObjects\AutoIncrementalId\AutoIncreme
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\Url;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Url\UrlValidator;
+use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\Common\Infrastructure\JsonPlaceholderTypicode\ApiConsumer;
 use olml89\IPGlobalTest\Common\Infrastructure\JsonPlaceholderTypicode\ResponseData\Post as JsonPlaceholderTypicodePostData;
 use olml89\IPGlobalTest\Common\Infrastructure\JsonPlaceholderTypicode\ResponseData\User as JsonPlaceholderTypicodeUserData;
+use olml89\IPGlobalTest\Common\Infrastructure\Ramsey\UuidGenerator;
 use olml89\IPGlobalTest\Post\Domain\Post;
 use olml89\IPGlobalTest\Post\Domain\RemotePostRetriever;
 use olml89\IPGlobalTest\Post\Domain\RemotePostRetrievingException;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
-use olml89\IPGlobalTest\User\Domain\Address\Company;
 use olml89\IPGlobalTest\User\Domain\Address\Geolocation\Geolocation;
 use olml89\IPGlobalTest\User\Domain\Address\ZipCode\ZipCode;
 use olml89\IPGlobalTest\User\Domain\Address\ZipCode\ZipCodeValidator;
+use olml89\IPGlobalTest\User\Domain\Company;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
 use olml89\IPGlobalTest\User\Domain\Email\EmailValidator;
 use olml89\IPGlobalTest\User\Domain\User;
 
+/**
+ * This service is not useful anymore since we have implemented persistence, and we can retrieve posts from
+ * our own database, but I want to maintain this as a proof of example.
+ *
+ * But since the remote JsonPlaceholderTypicode api uses auto-incremental integers as identifiers it is not
+ * compatible with our Domain entities anymore, so we have to override the remote values and
+ * use random UUIDs instead.
+ */
 final class JsonTypicodePostGetter implements RemotePostRetriever
 {
     public function __construct(
         private readonly ApiConsumer $jsonTypicodeApi,
+        private readonly UuidGenerator $uuidGenerator,
         private readonly EmailValidator $emailValidator,
         private readonly UrlValidator $urlValidator,
         private readonly ZipCodeValidator $zipCodeValidator,
@@ -41,9 +52,11 @@ final class JsonTypicodePostGetter implements RemotePostRetriever
             $userData = JsonPlaceholderTypicodeUserData::fromHttpResponse($userResponse);
 
             return new Post(
-                id: new AutoIncrementalId($postData->id),
+                // We omit the retrieved post id and create a random UUID instead
+                id: Uuid::random($this->uuidGenerator),
                 user: new User(
-                    id: new AutoIncrementalId($userData->id),
+                    // We omit the retrieved user id and create a random UUID instead
+                    id: Uuid::random($this->uuidGenerator),
                     name: new StringValueObject($userData->name),
                     username: new StringValueObject($userData->username),
                     email: new Email($userData->email, $this->emailValidator),

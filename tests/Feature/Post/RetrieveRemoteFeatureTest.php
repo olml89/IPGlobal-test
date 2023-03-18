@@ -3,9 +3,10 @@
 namespace Test\Feature\Post;
 
 use Faker\Generator as Faker;
+use olml89\IPGlobalTest\Post\Application\PostResult;
 use Tests\TestCase;
 
-final class RetrieveFeatureTest extends TestCase
+final class RetrieveRemoteFeatureTest extends TestCase
 {
     private readonly Faker $faker;
 
@@ -25,7 +26,7 @@ final class RetrieveFeatureTest extends TestCase
         // JsonPlaceholderTypicode API has 100 posts, so the last valid id is 100
         $id = 101;
 
-        $response = $this->withHeader('Accept', 'application/json')->get('/api/posts/'.$id);
+        $response = $this->withHeader('Accept', 'application/json')->get('/api/jsonapi/posts/'.$id);
 
         $response->assertNotFound();
     }
@@ -35,10 +36,8 @@ final class RetrieveFeatureTest extends TestCase
         // JsonPlaceholderTypicode API has 100 posts, so the last valid id is 100
         $id = $this->faker->randomNumber(1, 100);
 
-        $response = $this->withHeader('Accept', 'application/json')->get('/api/posts/'.$id);
-        $responseData = json_decode($response->getContent(), true);
+        $response = $this->withHeader('Accept', 'application/json')->get('/api/jsonapi/posts/'.$id);
 
         $response->assertOk();
-        $this->assertEquals($id, $responseData['id']);
     }
 }

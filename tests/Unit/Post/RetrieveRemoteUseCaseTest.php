@@ -10,15 +10,15 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use olml89\IPGlobalTest\Post\Application\Retrieve\RetrieveUseCase;
+use olml89\IPGlobalTest\Post\Application\Retrieve\RetrieveRemoteUseCase;
 use olml89\IPGlobalTest\Post\Domain\RemotePostRetrievingException;
 use Tests\TestCase;
 use Tests\Unit\Post\JsonPlaceholderTypicode\PostDataGenerator;
 use Tests\Unit\Post\JsonPlaceholderTypicode\UserDataGenerator;
 
-final class RetrieveUseCaseTest extends TestCase
+final class RetrieveRemoteUseCaseTest extends TestCase
 {
-    private readonly RetrieveUseCase $retrieveUseCase;
+    private readonly RetrieveRemoteUseCase $retrieveUseCase;
     private readonly Faker $faker;
     private readonly int $id;
     private MockHandler $requests;
@@ -35,7 +35,7 @@ final class RetrieveUseCaseTest extends TestCase
         $this->id = $this->faker->randomNumber();
         $this->requests = new MockHandler();
         $this->setGuzzleClient();
-        $this->retrieveUseCase = $this->app->get(RetrieveUseCase::class);
+        $this->retrieveUseCase = $this->app->get(RetrieveRemoteUseCase::class);
     }
 
     private function setGuzzleClient(): void
@@ -50,7 +50,7 @@ final class RetrieveUseCaseTest extends TestCase
         $this->requests->append(
             new ConnectException(
                 message: 'Error Communicating with Server',
-                request: new Request('GET', sprintf('/posts/%s', $this->id)),
+                request: new Request('GET', sprintf('/jsonapi/posts/%s', $this->id)),
             )
         );
 
@@ -64,7 +64,7 @@ final class RetrieveUseCaseTest extends TestCase
         $this->requests->append(
             new ClientException(
                 message: 'Post not found',
-                request: new Request('GET', sprintf('/posts/%s', $this->id)),
+                request: new Request('GET', sprintf('/jsonapi/posts/%s', $this->id)),
                 response: new Response(404),
             )
         );
@@ -74,11 +74,20 @@ final class RetrieveUseCaseTest extends TestCase
         $this->retrieveUseCase->retrieve($this->faker->randomNumber());
     }
 
-    public function test_that_valid_post_id_returns_valid_post(): void
+    public function test_that_valid_request_returns_valid_post(): void
     {
         $userId = $this->faker->randomNumber();
-        $postData = (new PostDataGenerator($this->faker))->withId($this->id)->withUserId($userId);
-        $userData = (new UserDataGenerator($this->faker))->withId($userId);
+        $postTitle = $this->faker->title();
+        $userName = $this->faker->name();
+
+        $postData = (new PostDataGenerator($this->faker))
+            ->withId($this->id)
+            ->withUserId($userId)
+            ->withTitle($postTitle);
+
+        $userData = (new UserDataGenerator($this->faker))
+            ->withId($userId)
+            ->withName($userName);
 
         $this->requests->append(
             new Response(
@@ -93,6 +102,7 @@ final class RetrieveUseCaseTest extends TestCase
 
         $postResult = $this->retrieveUseCase->retrieve($this->id);
 
-        $this->assertEquals($this->id, $postResult->id);
+        $this->assertEquals($postTitle, $postResult->title);
+        $this->assertEquals($userName, $postResult->user->name);
     }
 }
