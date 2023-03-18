@@ -9,6 +9,8 @@ final class RandomStringGenerator implements LaravelRandomStringGenerator
 {
     public function generate(int $length = null): string
     {
+        $length = $length ?? mt_rand(50, 100);
+
         return Str::random($length);
     }
 }

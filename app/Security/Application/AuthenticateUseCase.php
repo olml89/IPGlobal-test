@@ -41,7 +41,7 @@ final class AuthenticateUseCase
         if (is_null($token) || $token->isExpired()) {
             $token = new Token(
                 user: $user,
-                hash: new Md5Hash($this->randomStringGenerator->generate())
+                hash: Md5Hash::fromPlain($this->randomStringGenerator->generate())
             );
 
             $this->tokenRepository->save($token);
