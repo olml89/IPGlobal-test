@@ -2,7 +2,9 @@
 
 namespace olml89\IPGlobalTest\Post\Infrastructure\Input\Get;
 
+use Database\Factories\ValueObjects\PasswordFactory;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Str;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\Common\Infrastructure\JsonPlaceholderTypicode\ApiConsumer;
@@ -19,6 +21,7 @@ use olml89\IPGlobalTest\User\Domain\Address\ZipCode\ZipCodeValidator;
 use olml89\IPGlobalTest\User\Domain\Company;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
 use olml89\IPGlobalTest\User\Domain\Email\EmailValidator;
+use olml89\IPGlobalTest\User\Domain\Password\Password;
 use olml89\IPGlobalTest\User\Domain\Url\Url;
 use olml89\IPGlobalTest\User\Domain\Url\UrlValidator;
 use olml89\IPGlobalTest\User\Domain\User;
@@ -36,6 +39,7 @@ final class JsonTypicodePostGetter implements RemotePostRetriever
     public function __construct(
         private readonly ApiConsumer $jsonTypicodeApi,
         private readonly UuidGenerator $uuidGenerator,
+        private readonly PasswordFactory $passwordFactory,
         private readonly EmailValidator $emailValidator,
         private readonly UrlValidator $urlValidator,
         private readonly ZipCodeValidator $zipCodeValidator,
@@ -56,6 +60,8 @@ final class JsonTypicodePostGetter implements RemotePostRetriever
                 user: new User(
                     // We omit the retrieved user id and create a random UUID instead
                     id: Uuid::random($this->uuidGenerator),
+                    // We generate a dummy password as JsonPlaceholderApi user resource doesn't expose one
+                    password: $this->passwordFactory->create(),
                     name: new StringValueObject($userData->name),
                     username: new StringValueObject($userData->username),
                     email: new Email($userData->email, $this->emailValidator),
