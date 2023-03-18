@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Database\Factories\ValueObjects\EmailFactory;
+use Database\Factories\ValueObjects\PasswordFactory;
 use Database\Factories\ValueObjects\UrlFactory;
 use Database\Factories\ValueObjects\UuidFactory;
 use Database\Factories\ValueObjects\ZipCodeFactory;
@@ -12,6 +13,7 @@ use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
 use olml89\IPGlobalTest\User\Domain\Address\Geolocation\Geolocation;
 use olml89\IPGlobalTest\User\Domain\Company;
+use olml89\IPGlobalTest\User\Domain\Password\Password;
 use olml89\IPGlobalTest\User\Domain\User;
 use ReflectionException;
 
@@ -23,6 +25,7 @@ class UserFactory
         private readonly EmailFactory $emailFactory,
         private readonly ZipCodeFactory $zipCodeFactory,
         private readonly UrlFactory $urlFactory,
+        private readonly PasswordFactory $passwordFactory,
     ) {}
 
     /**
@@ -32,6 +35,7 @@ class UserFactory
     {
         return new User(
             id: $this->uuidFactory->create(),
+            password: $this->passwordFactory->create(),
             name: new StringValueObject($this->faker->name()),
             username: new StringValueObject($this->faker->name()),
             email: $this->emailFactory->create(),
