@@ -4,6 +4,7 @@ use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\DiffCommand;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\MigrateCommand;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\AutoIncrementalIdType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\EmailType;
+use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\PasswordType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\StringValueObjectType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\UrlType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\UuidType;
@@ -50,6 +51,7 @@ return [
         EmailType::class,
         UrlType::class,
         ZipCodeType::class,
+        PasswordType::class,
     ],
 
     'repositories' => [

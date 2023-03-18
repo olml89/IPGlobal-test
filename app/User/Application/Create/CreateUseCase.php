@@ -14,6 +14,8 @@ use olml89\IPGlobalTest\User\Domain\Address\ZipCode\ZipCodeValidator;
 use olml89\IPGlobalTest\User\Domain\Company;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
 use olml89\IPGlobalTest\User\Domain\Email\EmailValidator;
+use olml89\IPGlobalTest\User\Domain\Password\Hasher;
+use olml89\IPGlobalTest\User\Domain\Password\Password;
 use olml89\IPGlobalTest\User\Domain\Url\Url;
 use olml89\IPGlobalTest\User\Domain\Url\UrlValidator;
 use olml89\IPGlobalTest\User\Domain\User;
@@ -23,6 +25,7 @@ use olml89\IPGlobalTest\User\Domain\UserRepository;
 final class CreateUseCase
 {
     public function __construct(
+        private readonly Hasher $hasher,
         private readonly UserRepository $userRepository,
         private readonly UuidGenerator $uuidGenerator,
         private readonly EmailValidator $emailValidator,
@@ -37,6 +40,7 @@ final class CreateUseCase
     {
         return new User(
             id: Uuid::random($this->uuidGenerator),
+            password: Password::create($createData->password, $this->hasher),
             name: new StringValueObject($createData->name),
             username: new StringValueObject($createData->username),
             email: new Email($createData->email, $this->emailValidator),

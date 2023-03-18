@@ -20,6 +20,12 @@
         />
 
         <field
+            name="password"
+            column="password"
+            type="password"
+        />
+
+        <field
             name="name"
             column="name"
             type="StringValueObject"

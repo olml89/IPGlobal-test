@@ -14,6 +14,7 @@ final class ArtisanCreateCommand extends Command
      * @var string
      */
     protected $signature = 'user:create
+        {password}
         {name}
         {username}
         {email}
@@ -43,6 +44,7 @@ final class ArtisanCreateCommand extends Command
     public function handle(CreateUser $createUser): void
     {
         $createUserData = new CreateUserData(
+            password: $this->argument('password'),
             name: $this->argument('name'),
             username: $this->argument('username'),
             email: $this->argument('email'),

@@ -5,6 +5,7 @@ namespace olml89\IPGlobalTest\User\Application\Create;
 final class CreateData
 {
     public function __construct(
+        public readonly string $password,
         public readonly string $name,
         public readonly string $username,
         public readonly string $email,

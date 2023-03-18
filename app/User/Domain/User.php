@@ -6,6 +6,7 @@ use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
+use olml89\IPGlobalTest\User\Domain\Password\Password;
 use olml89\IPGlobalTest\User\Domain\Url\Url;
 
 class User
@@ -17,6 +18,7 @@ class User
         // the correct solution would be to do a pull request to try to fix the issue and linking our
         // composer doctrine version to our own fork until they approve it.
         private Uuid $id,
+        private Password $password,
         private StringValueObject $name,
         private StringValueObject $username,
         private Email $email,
@@ -29,6 +31,18 @@ class User
     public function id(): Uuid
     {
         return $this->id;
+    }
+
+    public function password(): Password
+    {
+        return $this->password;
+    }
+
+    public function setPassword(Password $password): static
+    {
+        $this->password = $password;
+
+        return $this;
     }
 
     public function name(): StringValueObject
