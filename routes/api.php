@@ -18,6 +18,6 @@ use olml89\IPGlobalTest\Security\Infrastructure\Http\LaravelAuthenticationContro
 */
 
 Route::post('/auth', LaravelAuthenticationController::class);
-Route::post('/posts', LaravelPublishPostController::class);
+Route::middleware(\olml89\IPGlobalTest\Common\Infrastructure\Laravel\Http\Middleware\TokenAuthenticate::class)->post('/posts', LaravelPublishPostController::class);
 Route::get('/jsonapi/posts/{id}', LaravelGetRemotePostController::class);
 Route::get('/posts/{id}', LaravelGetPostController::class);

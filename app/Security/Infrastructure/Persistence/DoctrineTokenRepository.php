@@ -6,6 +6,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use olml89\IPGlobalTest\Security\Domain\Md5Hash\Md5Hash;
 use olml89\IPGlobalTest\Security\Domain\Token;
 use olml89\IPGlobalTest\Security\Domain\TokenRepository;
 use olml89\IPGlobalTest\Security\Domain\TokenStorageException;
@@ -24,6 +25,11 @@ final class DoctrineTokenRepository extends EntityRepository implements TokenRep
     public function getByUser(User $user): ?Token
     {
         return $this->getEntityManager()->getRepository(Token::class)->findOneBy(['user' => $user]);
+    }
+
+    public function getByHash(Md5Hash $hash): ?Token
+    {
+        return $this->getEntityManager()->getRepository(Token::class)->findOneBy(['hash' => $hash]);
     }
 
     /**

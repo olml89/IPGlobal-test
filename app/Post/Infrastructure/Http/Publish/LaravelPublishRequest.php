@@ -3,10 +3,10 @@
 namespace olml89\IPGlobalTest\Post\Infrastructure\Http\Publish;
 
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
+use olml89\IPGlobalTest\Common\Infrastructure\Laravel\Http\Requests\AuthenticatedApiRequest;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishData;
 
-class LaravelPublishRequest extends FormRequest
+class LaravelPublishRequest extends AuthenticatedApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.

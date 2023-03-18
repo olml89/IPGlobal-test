@@ -2,10 +2,13 @@
 
 namespace olml89\IPGlobalTest\Post\Infrastructure\Http\Publish;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\UrlGenerator;
 use olml89\IPGlobalTest\Common\Infrastructure\Laravel\Http\Controllers\Controller;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishUseCase as PublishPost;
+use olml89\IPGlobalTest\Post\Domain\PostCreationException;
+use olml89\IPGlobalTest\Post\Domain\PostStorageException;
 use Symfony\Component\HttpFoundation\Response;
 
 class LaravelPublishController extends Controller
@@ -15,9 +18,15 @@ class LaravelPublishController extends Controller
         private readonly UrlGenerator $urlGenerator,
     ) {}
 
+    /**
+     * @throws AuthenticationException | PostCreationException | PostStorageException
+     */
     public function __invoke(LaravelPublishRequest $request): JsonResponse
     {
-        $result = $this->publishPost->publish($request->validated());
+        $result = $this->publishPost->publish(
+            publishData: $request->validated(),
+            user: $request->getAuthenticatedUser(),
+        );
 
         return new JsonResponse(
             data: $result,

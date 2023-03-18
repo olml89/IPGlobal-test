@@ -12,7 +12,7 @@ use olml89\IPGlobalTest\Post\Domain\Post;
 use olml89\IPGlobalTest\Post\Domain\PostCreationException;
 use olml89\IPGlobalTest\Post\Domain\PostRepository;
 use olml89\IPGlobalTest\Post\Domain\PostStorageException;
-use ReflectionException;
+use olml89\IPGlobalTest\User\Domain\User;
 
 final class PublishUseCase
 {
@@ -23,32 +23,23 @@ final class PublishUseCase
     ) {}
 
     /**
-     * @throws ReflectionException | ValueObjectException
-     */
-    private function createPost(PublishData $publishData): Post
-    {
-        // We create an authentic UUID as an id, but we simulate the retrieval of the current user
-        // of the session or the API token
-        return new Post(
-            id: Uuid::random($this->uuidGenerator),
-            user: $this->userFactory->create(),
-            title: new StringValueObject($publishData->title),
-            body: new StringValueObject($publishData->body),
-        );
-    }
-
-    /**
      * @throws PostCreationException | PostStorageException
      */
-    public function publish(PublishData $publishData): PostResult
+    public function publish(PublishData $publishData, User $user): PostResult
     {
         try {
-            $post = $this->createPost($publishData);
+            $post = new Post(
+                id: Uuid::random($this->uuidGenerator),
+                user: $user,
+                title: new StringValueObject($publishData->title),
+                body: new StringValueObject($publishData->body),
+            );
+
             $this->postRepository->save($post);
 
             return new PostResult($post);
         }
-        catch (ReflectionException|ValueObjectException $valueObjectException) {
+        catch (ValueObjectException $valueObjectException) {
             throw new PostCreationException($valueObjectException->getMessage(), $valueObjectException);
         }
     }
