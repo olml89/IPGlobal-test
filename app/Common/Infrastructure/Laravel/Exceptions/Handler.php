@@ -76,9 +76,12 @@ class Handler extends ExceptionHandler
             $e = new NotFoundHttpException($e->getMessage());
         }
 
-        // This converts value object validation exceptions to a 422 Unprocessable http response,
-        // without having to use the ValidationException used by Laravel (binded to the Validator)
-        if ($e instanceof ValueObjectException) {
+        // This converts direct unhandled domain value object validation exceptions or handled
+        // entity domain exceptions to a 422 Unprocessable http response, without having to deal
+        // with the ValidationException used by Laravel (binded to the Validator)
+        if ($e instanceof ValueObjectException
+            || ($e instanceof DomainException && $e->getPrevious() instanceof ValueObjectException)
+        ) {
             $this->optionallyReportInfrastructureExceptionFromDomainException($e);
 
             $e = new UnprocessableEntityHttpException($e->getMessage());
