@@ -24,7 +24,13 @@ final class DoctrineTokenRepository extends EntityRepository implements TokenRep
 
     public function getByUser(User $user): ?Token
     {
-        return $this->getEntityManager()->getRepository(Token::class)->findOneBy(['user' => $user]);
+        return $this
+            ->getEntityManager()
+            ->getRepository(Token::class)
+            ->findOneBy(
+                criteria: ['user' => $user],
+                orderBy: ['expiresAt' => 'DESC'],
+            );
     }
 
     public function getByHash(Md5Hash $hash): ?Token
