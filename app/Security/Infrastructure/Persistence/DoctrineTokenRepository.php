@@ -47,7 +47,7 @@ final class DoctrineTokenRepository extends EntityRepository implements TokenRep
             $this->getEntityManager()->persist($token);
             $this->getEntityManager()->flush();
         }
-        catch (\Exception $doctrineException) {
+        catch (Exception $doctrineException) {
             throw new TokenStorageException($doctrineException->getMessage(), $doctrineException);
         }
     }
