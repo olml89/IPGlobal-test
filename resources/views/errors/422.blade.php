@@ -1,7 +1,7 @@
 @php
-use olml89\IPGlobalTest\Post\Application\PostResult;
+    use Symfony\Component\HttpKernel\Exception\HttpException;
 
-/** @var PostResult[] $posts */
+    /** @var HttpException $exception */
 @endphp
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@ use olml89\IPGlobalTest\Post\Application\PostResult;
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>List of posts</title>
+    <title>Error 422</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,17 +22,9 @@ use olml89\IPGlobalTest\Post\Application\PostResult;
 <body class="antialiased">
 
 <main>
-    <section class="posts">
-        <h1>This is a comprehensive list of posts</h1>
-
-        @foreach ($posts as $post)
-            <article class="post-preview" data-id="{{ $post->id }}">
-                <a class="content" href="/posts/{{ $post->id }}">
-                    <div class="title"><strong>{{ $post->title }}</strong></div>
-                    <div class="timestamp">posted on: {{ $post->posted_at }}</div>
-                </a>
-            </article>
-        @endforeach
+    <section class="error">
+        <h1>Error 422: Unprocessable entity</h1>
+        <article class="error">{{ $exception->getMessage() }}</article>
     </section>
     <footer>
         Copyright by <a href="https://github.com/olml89">Oleguer Mas</a>
@@ -41,3 +33,4 @@ use olml89\IPGlobalTest\Post\Application\PostResult;
 
 </body>
 </html>
+
