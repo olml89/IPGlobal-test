@@ -8,7 +8,9 @@
 
 # Requirements
 
-Implementation using **[Laravel 10](https://github.com/laravel/framework)** of a Blog application prototype with two functionalities:
+Implementation using 
+**[Laravel 10](https://laravel.com)** 
+of a Blog application prototype with two functionalities:
 
 - Page listing the existing posts
 - Individual post page, showing the post information and a brief sheet about the author
@@ -18,13 +20,32 @@ The blog has to expose a public API with two endpoints:
 - **GET /posts/{:postId}** to get the information of a post, including the author's data
 - **POST /posts** to publish new posts
 
-You can consult the full specifications in spanish in the [original document](https://github.com/olml89/IPGlobal-test/blob/master/docs/specifications.pdf).
+You can consult the full specifications in spanish in the 
+[original document](https://github.com/olml89/IPGlobal-test/blob/master/docs/specifications.pdf).
 
-# Development phases
+# Application overview
+
+The application has been structured following a DDD pattern. The infrastructure layer receives a request
+(through an HTTP request or a CLI command) that is mapped into a Laravel controller or an Artisan
+command, that calls a use case sitting in the application layer.
+
+That point is the separation between our application and the framework, so the use cases would be
+reusable if some day decided to change the framework. They are also reusable between input ports, so the 
+same use case can be shared by a controller, a command or whatever infrastructure point of entry that has 
+to perform the same task into our application.
+
+The use case works directly with domain entities and services. The domain services are commonly interfaces
+that are then implemented in the infrastructure layer. This way we don't depend on third-party vendors
+to develop our domain actions. Each use case returns an application layer result, 
+which is a DataTransferObject (or an array of them) which consists on scalars or ValueObjects, 
+also consisting on scalars. The ValueObjects sit in the model, but as they come into the results
+the infrastructure layer never speaks directly with our domain.
 
 ## Phase 1: Prototype
 
-On this early stage I installed **Laravel 10**, organized the application to follow a DDD directory structure and 
+On this early stage I installed 
+**[laravel/framework 10.0](https://github.com/laravel/framework)**, 
+organized the application to follow a DDD directory structure and 
 developed a prototype with two mock functionalities, post publishing and post retrieval. The post publishing
 one only showed a 201 response after validating the input data, and the retrieving feature got the data from the
 remote JsonPlaceholderApi.
@@ -44,8 +65,12 @@ and display it as it was the post's author information.
 
 ## Phase 2: Persistence
 
-The next step was to implement persistence, so I installed **Doctrine 3** as I prefer it to Eloquent.
-I also installed **Doctrine Migrations 3.6** in order to generate the database schema automatically from 
+The next step was to implement persistence, so I installed
+**[doctrine/orm 3.0](https://github.com/doctrine/orm)**
+as I prefer it to Eloquent.
+I also installed
+**[doctrine/migrations 3.6](https://github.com/doctrine/migrations)**
+in order to generate the database schema automatically from 
 my entity mappings, but I had to develop a thin wrapper around it to be able to run its commands from artisan
 and use the already configured connection in the application. 
 
@@ -82,6 +107,43 @@ Steps:
 
 - Refactor the post publishing feature to need a valid Api token in order to perform the action.
 
+- Implement a feature to enforce the incoming data to be in JSON format.
+
+- Document the api using the
+**[OpenApi 3.0.0](https://spec.openapis.org/oas/v3.0.0)**
+standard through
+**[darkaonline/l5-swagger 8.5](https://github.com/DarkaOnLine/L5-Swagger)**
+
+## Phase 4: Front-end
+
+As most of the use cases have been already developed, this doesn't take too much effort. I developed
+two views, one to display the list of posts and another one to display the post information,
+including the author's data. I modeled them with some dummy data using webpack through
+**[laravel-mix 6.0](https://www.npmjs.com/package/laravel-mix)**
+(I had to install it with npm as Laravel 10 comes by default with
+**[vite 4.0](https://www.npmjs.com/package/vite)**).
+
+Then I implemented two web controllers and had them retrieve the needed information and pass it to
+the already created views. The use case to retrieve a post already existed, so I only had to create
+the post listing use case and implement the needed method into the post repository and that was it.
+
+Steps:
+
+- Develop two views, one for each web functionality.
+
+- Implement the two web controllers and create the post listing use case.
+
+## Phase 5: Things left
+
+Or what I'd do if I had more time to complete the test. For sure, one thing would be to implement a nice
+testing environment. The features are currently tested (on local) but they use the same persistence
+environment than the application, so each time you run the test the database is polluted with test data.
+
+Also, this is a problem with the
+**[build-test](https://github.com/olml89/IPGlobal-test/actions/workflows/build.yml)**
+GitHub Action to implement a CI flow, the tests passed smoothly and uploaded the Codecov.io
+code coverage % badge until I started testing features involving persistence, as the database
+connection for the testing environment is not properly configured the action fails.
 
 # How to use it
 
@@ -286,5 +348,10 @@ and that the user information corresponds to [https://jsonplaceholder.typicode.c
         "posted_at": "2023-03-18T20:33:30+00:00"
     }
 ```
+
+A full **OpenApi 3.0** based api documentation can be consulted at **/api/documentation** using **Swagger** 
+once the application is installed, but you can read the raw 
+[yml specification file](https://github.com/olml89/IPGlobal-test/blob/master/docs/api.yml)
+if you prefer it.
 
 
