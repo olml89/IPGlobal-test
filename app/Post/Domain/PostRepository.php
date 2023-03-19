@@ -6,6 +6,11 @@ use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 
 interface PostRepository
 {
+    /**
+     * @return Post[]
+     */
+    public function all(): array;
+
     public function get(Uuid $id): ?Post;
 
     /**

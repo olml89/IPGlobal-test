@@ -1,5 +1,79 @@
+$backgroundColor: rgb(220, 220, 220);
+$baseColor: rgba(60, 60, 60, 0.65);
+$selectedColor: rgba(20, 20, 20, 0.65);
+$selectedBackgroundColor: rgba(180, 180, 180, 0.65);
+$bold: rgba(30, 30, 30, 0.8);
 
-article {
+html {
+    background-color: $backgroundColor;
+    color: $baseColor;
+    font-family: Figtree, sans-serif;
+}
+
+a {
+    all: unset;
+    &:not(.content) {
+        cursor: pointer;
+        color: $bold;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+strong, a {
+    &:hover {
+        color: $selectedColor;
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    heigth: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+section {
+    padding: 40px;
+}
+
+article.preview {
+    margin-top: 30px;
+    margin-bottom: 30px;
     background-color: lightgrey;
-    color: rgb(200, 200, 200);
+    padding: 15px;
+    border: 2px solid $baseColor;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    &:hover {
+        background-color: $selectedBackgroundColor;
+        border-color: $selectedColor;
+        color: $selectedColor;
+    }
+    .content {
+        display: flex;
+        .title {
+            flex-grow: 20;
+        }
+        .timestamp {
+            flex-grow: 1;
+            text-align: right;
+        }
+    }
+}
+
+footer {
+    margin-top: auto;
+    padding: 40px;
+    font-size: 1.2rem;
+    background-color: $baseColor;
+    color: $backgroundColor;
+    text-align: right;
 }

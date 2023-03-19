@@ -1,6 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use olml89\IPGlobalTest\Post\Infrastructure\Http\Web\LaravelListController as WebListPostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/posts', function () {
-    return view('posts');
-});
+Route::get('/posts', WebListPostsController::class);
 

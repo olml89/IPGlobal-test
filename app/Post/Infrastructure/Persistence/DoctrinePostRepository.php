@@ -21,6 +21,14 @@ final class DoctrinePostRepository extends EntityRepository implements PostRepos
         );
     }
 
+    /**
+     * @return Post[]
+     */
+    public function all(): array
+    {
+        return $this->getEntityManager()->getRepository(Post::class)->findAll();
+    }
+
     public function get(Uuid $id): ?Post
     {
         return $this->getEntityManager()->getRepository(Post::class)->find($id);
