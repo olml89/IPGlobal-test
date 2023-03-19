@@ -265,7 +265,7 @@ This allows you to create new posts:
 You can also retrieve published posts (no matter who the author is):
 
 #### Expect code 200 and info about the requested post    
-**POST** /api/posts/85e9ff5a-b601-4e4c-9946-d1050d1c1c89    
+**GET** /api/posts/85e9ff5a-b601-4e4c-9946-d1050d1c1c89    
 **Content-Type**: application/json    
 (No need for the Api-Token)
 
@@ -311,7 +311,7 @@ You will see the next example matches with [https://jsonplaceholder.typicode.com
 and that the user information corresponds to [https://jsonplaceholder.typicode.com/users/2](https://jsonplaceholder.typicode.com/users/2):
 
 #### Expect code 200 and info about the requested post in JsonPlaceholderApi    
-**POST** /api/jsonapi/posts/12    
+**GET** /api/jsonapi/posts/12    
 **Content-Type**: application/json    
 (No need for the Api-Token) 
 
