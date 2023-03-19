@@ -17,7 +17,7 @@ of a Blog application prototype with two functionalities:
 
 The blog has to expose a public API with two endpoints:
 
-- **GET /posts/{:postId}** to get the information of a post, including the author's data
+- **GET /posts/{id}** to get the information of a post, including the author's data
 - **POST /posts** to publish new posts
 
 You can consult the full specifications in spanish in the 
@@ -87,9 +87,9 @@ of the parameters).
 
 - Refactor the post retrieval feature to get it from the database (with the mocked user attached).
 
-Even I had no more use for the JsonPlaceholderApi post retriever at this point, I still left it in a separate
-use case as a proof of concept (even I had to do some adjustments to it, as the format of their ids and ours
-is incompatible now).
+Even though I had no more use for the JsonPlaceholderApi post retriever at this point, I still left it in 
+a separate use case as a proof of concept (however, I had to do some adjustments to it, as the format of 
+their ids and ours is incompatible now).
 
 ## Phase 3: Authentication
 
@@ -187,7 +187,7 @@ Or if you prefer to skip specifying all the parameters and to create a random
 user setting only **email** and **password**:
 
 ````php
-php artisan user:create {email} {password}
+php artisan user:create:random {email} {password}
 ````
 
 
@@ -267,7 +267,7 @@ You can also retrieve published posts (no matter who the author is):
 #### Expect code 200 and info about the requested post    
 **POST** /api/posts/85e9ff5a-b601-4e4c-9946-d1050d1c1c89    
 **Content-Type**: application/json    
-**Api-Token**: 2437d1dc0ea2921dcd1a0a27fcf0debb    
+(No need for the Api-Token)
 
 ```http
    
@@ -313,7 +313,7 @@ and that the user information corresponds to [https://jsonplaceholder.typicode.c
 #### Expect code 200 and info about the requested post in JsonPlaceholderApi    
 **POST** /api/jsonapi/posts/12    
 **Content-Type**: application/json    
-**Api-Token**: 2437d1dc0ea2921dcd1a0a27fcf0debb    
+(No need for the Api-Token) 
 
 ```http
    
