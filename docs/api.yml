@@ -1,0 +1,230 @@
+openapi: 3.0.0
+
+info:
+  title: IPGlobal test
+  description: Implements the api functionality for the IPGlobal test
+  version: 1.0.0
+
+servers:
+  - url: http://ipglobal-test.test/api
+    description: Development server
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Api-Token
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          type: object
+          $ref: '#/components/schemas/User'
+        title:
+          type: string
+        body:
+          type: string
+        posted_at:
+          type: string
+          format: date-time
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        address:
+          type: object
+          $ref: '#/components/schemas/Address'
+        phone:
+          type: string
+        url:
+          type: string
+          format: uri
+        company:
+          type: object
+          $ref: '#/components/schemas/Company'
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        suite:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+        geolocation:
+          type: object
+          $ref: '#/components/schemas/Geolocation'
+    Geolocation:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: float
+        longitude:
+          type: number
+          format: float
+    Company:
+      type: object
+      properties:
+        name:
+          type: string
+        catchphrase:
+          type: string
+        bs:
+          type: string
+    Token:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        token:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+
+paths:
+  /jsonapi/posts/{id}:
+    get:
+      summary: Returns a post from JsonPlaceholderTypicodeApi by its id
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          example: 12
+      responses:
+        '200':
+          description: The data of the requested post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post not found
+        '500':
+          description: Unknown error
+  /posts/{uuid}:
+    get:
+      summary: Returns a post from local storage by its UUID
+      tags:
+        - Posts
+      parameters:
+        - in: path
+          name: uuid
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 83b625dc-0969-44d1-8bca-e51d90ac8a1d
+      responses:
+        '200':
+          description: The data of the requested post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '422':
+          description: Invalid post uuid
+        '404':
+          description: Post not found
+        '500':
+          description: Unknown error
+  /auth:
+    post:
+      summary: Provides authentication for users
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        description: Credentials of the user we want to authenticate
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: fake-email@fakemail.com
+                password:
+                  type: string
+                  format: password
+                  example: 12345
+      responses:
+        '200':
+          description: A token representing the user identified by the given credentials, valid for an hour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '422':
+          description: Invalid email
+        '404':
+          description: User with the specified email not found
+        '500':
+          description: Unknown error
+  /posts:
+    post:
+      summary: Publishes a post on the local storage
+      tags:
+        - Posts
+      parameters:
+        - in: header
+          required: true
+          name: Api-Token
+          description: A valid non-expired token representing a user
+          schema:
+            type: string
+          example: ab5c96323f5f14e7710bfb9844e8c672
+      requestBody:
+        required: true
+        description: The contents of the post we want to publish
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: Lorem ipsum sit amet
+                body:
+                  type: string
+                  example: Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
+      responses:
+        '201':
+          description: The data of the published post
+          headers:
+            Location:
+              schema:
+                type: string
+                format: uri
+                description: The uri where the published post is stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '401':
+          description: The Api token is missing, unexisting or has expired (unauthenticated user)
+        '500':
+          description: Unknown error
