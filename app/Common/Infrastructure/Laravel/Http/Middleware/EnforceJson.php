@@ -25,7 +25,8 @@ final class EnforceJson
         }
 
         // Http Unsupported Media Type
-        if (!$request->isJson()) {
+        // Safe methods are the read-only ones: HEAD, GET, OPTIONS, TRACE
+        if (!$request->isMethodSafe() && !$request->isJson()) {
             return new JsonResponse(
                 data: ['message' => 'This api only consumes data in \'application/json\' format'],
                 status: 415,
