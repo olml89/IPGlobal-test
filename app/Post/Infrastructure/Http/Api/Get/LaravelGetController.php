@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\Post\Infrastructure\Http\Get;
+namespace olml89\IPGlobalTest\Post\Infrastructure\Http\Api\Get;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

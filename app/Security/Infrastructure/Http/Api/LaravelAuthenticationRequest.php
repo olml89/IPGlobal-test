@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace olml89\IPGlobalTest\Post\Infrastructure\Http\Publish;
+namespace olml89\IPGlobalTest\Security\Infrastructure\Http\Api;
 
 use Illuminate\Contracts\Validation\ValidationRule;
-use olml89\IPGlobalTest\Common\Infrastructure\Laravel\Http\Requests\AuthenticatedApiRequest;
-use olml89\IPGlobalTest\Post\Application\Publish\PublishData;
+use Illuminate\Foundation\Http\FormRequest;
+use olml89\IPGlobalTest\Security\Application\AuthenticationData;
 
-class LaravelPublishRequest extends AuthenticatedApiRequest
+final class LaravelAuthenticationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class LaravelPublishRequest extends AuthenticatedApiRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
-            'body' => ['required', 'string'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
         ];
     }
 
@@ -36,13 +36,13 @@ class LaravelPublishRequest extends AuthenticatedApiRequest
      * @param  mixed  $default
      * @return mixed
      */
-    public function validated($key = null, $default = null): PublishData
+    public function validated($key = null, $default = null): AuthenticationData
     {
         $validatedData = parent::validated($key, $default);
 
-        return new PublishData(
-            title: $validatedData['title'],
-            body: $validatedData['body'],
+        return new AuthenticationData(
+            email: $validatedData['email'],
+            password: $validatedData['password'],
         );
     }
 }

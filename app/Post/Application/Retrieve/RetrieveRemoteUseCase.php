@@ -2,9 +2,9 @@
 
 namespace olml89\IPGlobalTest\Post\Application\Retrieve;
 
-use olml89\IPGlobalTest\Post\Domain\PostNotFoundException;
 use olml89\IPGlobalTest\Post\Application\PostResult;
-use olml89\IPGlobalTest\Post\Infrastructure\Http\Get\JsonTypicodePostGetter;
+use olml89\IPGlobalTest\Post\Domain\PostNotFoundException;
+use olml89\IPGlobalTest\Post\Infrastructure\Http\Api\Get\JsonTypicodePostGetter;
 
 final class RetrieveRemoteUseCase
 {
