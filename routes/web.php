@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use olml89\IPGlobalTest\Post\Infrastructure\Http\Web\LaravelListController as WebListPostsController;
+use olml89\IPGlobalTest\Post\Infrastructure\Http\Web\LaravelGetController as WebGetPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +20,5 @@ Route::get('/', function () {
 });
 
 Route::get('/posts', WebListPostsController::class);
+Route::get('/posts/{id}', WebGetPostController::class);
 

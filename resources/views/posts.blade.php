@@ -23,11 +23,11 @@ use olml89\IPGlobalTest\Post\Application\PostResult;
 <body class="antialiased">
 
 <main>
-    <section>
+    <section class="posts">
         <h1>This is a comprehensive list of posts</h1>
 
         @foreach ($posts as $post)
-            <article class="preview">
+            <article class="post-preview" data-id="{{ $post->id }}">
                 <a class="content" href="/posts/{{ $post->id }}">
                     <div class="title"><strong>{{ $post->title }}</strong></div>
                     <div class="timestamp">posted on: {{ $post->posted_at }}</div>
