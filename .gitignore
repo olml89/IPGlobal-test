@@ -1,6 +1,5 @@
 /.phpunit.cache
 /node_modules
-/public/build
 /public/hot
 /public/storage
 /storage/*.key
@@ -19,3 +18,9 @@ yarn-error.log
 /.vscode
 
 storage/proxies/
+
+public/js/
+
+public/css/
+
+public/mix-manifest.json
