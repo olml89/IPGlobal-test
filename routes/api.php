@@ -5,7 +5,7 @@ use olml89\IPGlobalTest\Common\Infrastructure\Laravel\Http\Middleware\TokenAuthe
 use olml89\IPGlobalTest\Post\Infrastructure\Http\Api\Get\LaravelGetController as ApiGetPostController;
 use olml89\IPGlobalTest\Post\Infrastructure\Http\Api\Get\LaravelGetRemoteController as ApiGetRemotePostController;
 use olml89\IPGlobalTest\Post\Infrastructure\Http\Api\Post\LaravelPublishController as ApiPublishPostController;
-use olml89\IPGlobalTest\Security\Infrastructure\Http\Api\LaravelAuthenticationController as ApiAuthenticationControler;
+use olml89\IPGlobalTest\Security\Infrastructure\Http\Api\LaravelAuthenticationController as ApiAuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +18,7 @@ use olml89\IPGlobalTest\Security\Infrastructure\Http\Api\LaravelAuthenticationCo
 |
 */
 
-Route::post('/auth', ApiAuthenticationControler::class);
+Route::post('/auth', ApiAuthenticationController::class);
 Route::middleware(TokenAuthenticateMiddleware::class)->post('/posts', ApiPublishPostController::class);
 Route::get('/jsonapi/posts/{id}', ApiGetRemotePostController::class);
 Route::get('/posts/{id}', ApiGetPostController::class);
