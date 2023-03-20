@@ -3,6 +3,8 @@
 namespace Tests\Feature\Post;
 
 use Database\Factories\ValueObjects\EmailFactory;
+use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Faker\Generator as Faker;
 use Illuminate\Database\Connection;
 use Illuminate\Testing\TestResponse;
@@ -19,9 +21,9 @@ final class PublishFeatureTest extends TestCase
     use PrepareDatabase;
 
     private readonly Connection $database;
-    private readonly TokenRepository $tokenRepository;
+    private readonly EntityManagerInterface $entityManager;
     private readonly User $user;
-    private readonly string $hash;
+    private readonly Token $token;
     private readonly array $input;
 
     /**
@@ -35,9 +37,10 @@ final class PublishFeatureTest extends TestCase
         $this->migrate();
 
         $this->database = $this->app->get(Connection::class);
-        $this->tokenRepository = $this->app->get(TokenRepository::class);
+        $this->entityManager = $this->app->get(EntityManagerInterface::class);
 
         $this->setUpUser();
+        $this->setUpToken();
         $this->setUpInput();
     }
 
@@ -64,6 +67,18 @@ final class PublishFeatureTest extends TestCase
         $this->user = $userRepository->getByEmail(
             $emailFactory->create('johndeere@fake-mail.com')
         );
+    }
+
+    /**
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    private function setUpToken(): void
+    {
+        /** @var TokenRepository $tokenRepository */
+        $tokenRepository = $this->app->get(TokenRepository::class);
+
+        $this->token = $tokenRepository->getByUser($this->user);
     }
 
     /**
@@ -102,59 +117,47 @@ final class PublishFeatureTest extends TestCase
      */
     public function test_unexisting_api_token_generates_401_response(): void
     {
-        $token = $this->tokenRepository->getByUser($this->user);
-
-        // Using this we don't have to implement the delete method in our token repository,
-        // which is not needed by our domain, so we won't couple our domain to our tests.
-
-        // https://softwareengineering.stackexchange.com/questions/86844/is-it-ok-to-introduce-methods-that-are-used-only-during-unit-tests
+        /**
+         * Using this we don't have to implement the delete method in our token repository,
+         * which is not needed by our domain, so we won't couple our domain to our tests.
+         *
+         * https://softwareengineering.stackexchange.com/questions/86844/is-it-ok-to-introduce-methods-that-are-used-only-during-unit-tests
+         */
         $this->database->getDoctrineConnection()->delete(
             table: 'tokens',
-            criteria: ['hash' => (string)$token->hash()],
+            criteria: ['hash' => (string)$this->token->hash()],
         );
 
         $response = $this
             ->withHeader('Accept', 'application/json')
             ->withHeader('Content-Type', 'application/json')
-            ->withHeader('Api-Token', (string)$token->hash())
+            ->withHeader('Api-Token', (string)$this->token->hash())
             ->postJson('/api/posts', $this->input);
 
         $response->assertUnauthorized();
         $this->assertEquals('Api token not set or expired', $this->getErrorMessage($response));
     }
 
-
-    private function mockExpiredToken(): Token
-    {
-        $realToken = $this->tokenRepository->getByUser($this->user);
-
-        $expiredToken = $this->mock(Token::class, function(MockInterface $mock) use($realToken): void {
-            $mock->shouldReceive('isExpired')
-                ->once()
-                ->andReturnTrue();
-
-            $mock->shouldReceive('hash')
-                ->once()
-                ->andReturn($realToken->hash());
-        });
-
-        $this->mock(TokenRepository::class, function(MockInterface $mock) use($expiredToken): void {
-            $mock->shouldReceive('getByHash')
-                ->once()
-                ->andReturn($expiredToken);
-        });
-
-        return $expiredToken;
-    }
-
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function test_expired_api_token_generates_401_response(): void
     {
-        $token = $this->mockExpiredToken();
+        // We set the datetime expiration at now.
+        // This is the right way to do it as the Token entity doesn't allow to modify it's internal expiredAt property.
+        $this->database->getDoctrineConnection()->update(
+            table: 'tokens',
+            data: ['expires_at' => (new DateTimeImmutable())->format('Y-m-d H:i:s')],
+            criteria: ['hash' => (string)$this->token->hash()],
+        );
+
+        // We have to do this in order to avoid Doctrine using a cached version of the token when requested for it.
+        $this->entityManager->clear();
 
         $response = $this
             ->withHeader('Accept', 'application/json')
             ->withHeader('Content-Type', 'application/json')
-            ->withHeader('Api-Token', (string)$token->hash())
+            ->withHeader('Api-Token', (string)$this->token->hash())
             ->postJson('/api/posts', $this->input);
 
         $response->assertUnauthorized();
@@ -163,12 +166,10 @@ final class PublishFeatureTest extends TestCase
 
     public function test_invalid_body_generates_422_response(): void
     {
-        $token = $this->tokenRepository->getByUser($this->user);
-
         $response = $this
             ->withHeader('Accept', 'application/json')
             ->withHeader('Content-Type', 'application/json')
-            ->withHeader('Api-Token', (string)$token->hash())
+            ->withHeader('Api-Token', (string)$this->token->hash())
             ->postJson('/api/posts');
 
         $response->assertUnprocessable();
@@ -176,12 +177,10 @@ final class PublishFeatureTest extends TestCase
 
     public function test_valid_body_generates_201_response(): void
     {
-        $token = $this->tokenRepository->getByUser($this->user);
-
         $response = $this
             ->withHeader('Accept', 'application/json')
             ->withHeader('Content-Type', 'application/json')
-            ->withHeader('Api-Token', (string)$token->hash())
+            ->withHeader('Api-Token', (string)$this->token->hash())
             ->postJson('/api/posts', $this->input);
 
         $response->assertCreated();
