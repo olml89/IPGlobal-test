@@ -25,7 +25,9 @@ final class RetrieveRemoteFeatureTest extends TestCase
         // JsonPlaceholderTypicode API has 100 posts, so the last valid id is 100
         $id = 101;
 
-        $response = $this->withHeader('Accept', 'application/json')->get('/api/jsonapi/posts/'.$id);
+        $response = $this
+            ->withHeader('Accept', 'application/json')
+            ->get('/api/jsonapi/posts/'.$id);
 
         $response->assertNotFound();
     }
@@ -35,7 +37,9 @@ final class RetrieveRemoteFeatureTest extends TestCase
         // JsonPlaceholderTypicode API has 100 posts, so the last valid id is 100
         $id = $this->faker->randomNumber(1, 100);
 
-        $response = $this->withHeader('Accept', 'application/json')->get('/api/jsonapi/posts/'.$id);
+        $response = $this
+            ->withHeader('Accept', 'application/json')
+            ->get('/api/jsonapi/posts/'.$id);
 
         $response->assertOk();
     }
