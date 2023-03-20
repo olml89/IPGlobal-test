@@ -45,7 +45,8 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
 
         $response = $this
             ->withHeader('Accept', 'application/json')
-            ->post('/api/auth', $input);
+            ->withHeader('Content-Type', 'application/json')
+            ->postJson('/api/auth', $input);
 
         $response->assertUnprocessable();
     }
@@ -76,7 +77,8 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
 
         $response = $this
             ->withHeader('Accept', 'application/json')
-            ->post('/api/auth', $input);
+            ->withHeader('Content-Type', 'application/json')
+            ->postJson('/api/auth', $input);
 
         $response->assertNotFound();
 
@@ -97,7 +99,8 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
 
         $response = $this
             ->withHeader('Accept', 'application/json')
-            ->post('/api/auth', $input);
+            ->withHeader('Content-Type', 'application/json')
+            ->postJson('/api/auth', $input);
 
         $response->assertNotFound();
 
@@ -119,7 +122,8 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
 
         $response = $this
             ->withHeader('Accept', 'application/json')
-            ->post('/api/auth', $input);
+            ->withHeader('Content-Type', 'application/json')
+            ->postJson('/api/auth', $input);
 
         $response->assertOk();
 

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Post;
 
 use Database\Factories\UserFactory;
-use DateTimeImmutable;
 use Faker\Generator as Faker;
 use Illuminate\Testing\TestResponse;
 use Mockery\MockInterface;
@@ -11,7 +10,6 @@ use olml89\IPGlobalTest\Security\Domain\Md5Hash\Md5Hash;
 use olml89\IPGlobalTest\Security\Domain\Token;
 use olml89\IPGlobalTest\Security\Domain\TokenRepository;
 use olml89\IPGlobalTest\User\Domain\User;
-use ReflectionClass;
 use Tests\TestCase;
 
 final class PublishFeatureTest extends TestCase
@@ -62,7 +60,8 @@ final class PublishFeatureTest extends TestCase
     {
         $response = $this
             ->withHeader('Accept', 'application/json')
-            ->post('/api/posts', $this->input);
+            ->withHeader('Content-Type', 'application/json')
+            ->postJson('/api/posts', $this->input);
 
         $response->assertUnauthorized();
         $this->assertEquals('Api-Token header not set', $this->getErrorMessage($response));
@@ -74,8 +73,9 @@ final class PublishFeatureTest extends TestCase
 
         $response = $this
             ->withHeader('Accept', 'application/json')
+            ->withHeader('Content-Type', 'application/json')
             ->withHeader('Api-Token', $this->hash)
-            ->post('/api/posts', $this->input);
+            ->postJson('/api/posts', $this->input);
 
         $response->assertUnauthorized();
         $this->assertEquals('Api token not set or expired', $this->getErrorMessage($response));
@@ -102,14 +102,15 @@ final class PublishFeatureTest extends TestCase
 
         $response = $this
             ->withHeader('Accept', 'application/json')
+            ->withHeader('Content-Type', 'application/json')
             ->withHeader('Api-Token', $this->hash)
-            ->post('/api/posts', $this->input);
+            ->postJson('/api/posts', $this->input);
 
         $response->assertUnauthorized();
         $this->assertEquals('Api token not set or expired', $this->getErrorMessage($response));
     }
 
-    public function test_valid_token_and_generates_201_response(): void
+    public function test_invalid_body_generates_422_response(): void
     {
         $this->setUpToken(
             new Token($this->user, Md5Hash::fromHash($this->hash))
@@ -117,8 +118,24 @@ final class PublishFeatureTest extends TestCase
 
         $response = $this
             ->withHeader('Accept', 'application/json')
+            ->withHeader('Content-Type', 'application/json')
             ->withHeader('Api-Token', $this->hash)
-            ->post('/api/posts', $this->input);
+            ->postJson('/api/posts');
+
+        $response->assertUnprocessable();
+    }
+
+    public function test_valid_body_generates_201_response(): void
+    {
+        $this->setUpToken(
+            new Token($this->user, Md5Hash::fromHash($this->hash))
+        );
+
+        $response = $this
+            ->withHeader('Accept', 'application/json')
+            ->withHeader('Content-Type', 'application/json')
+            ->withHeader('Api-Token', $this->hash)
+            ->postJson('/api/posts', $this->input);
 
         $response->assertCreated();
         $response->assertHeader('Location');

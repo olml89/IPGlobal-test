@@ -3,7 +3,6 @@
 namespace Test\Feature\Post;
 
 use Faker\Generator as Faker;
-use olml89\IPGlobalTest\Post\Application\PostResult;
 use Tests\TestCase;
 
 final class RetrieveRemoteFeatureTest extends TestCase
