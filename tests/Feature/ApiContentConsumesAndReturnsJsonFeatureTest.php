@@ -40,4 +40,14 @@ final class ApiContentConsumesAndReturnsJsonFeatureTest extends TestCase
 
         $response->assertUnsupportedMediaType();
     }
+
+    public function test_no_application_json_in_the_content_type_header_does_not_generate_415_response_on_get_requests(): void
+    {
+        $response = $this
+            ->withHeader('Accept', 'application/json')
+            ->withHeader('Content-Type', 'text/html')
+            ->get('/api/jsonapi/posts/12');
+
+        $response->assertOk();
+    }
 }
