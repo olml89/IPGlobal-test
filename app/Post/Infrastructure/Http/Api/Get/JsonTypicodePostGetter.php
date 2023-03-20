@@ -20,6 +20,7 @@ use olml89\IPGlobalTest\User\Domain\Address\ZipCode\ZipCodeValidator;
 use olml89\IPGlobalTest\User\Domain\Company;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
 use olml89\IPGlobalTest\User\Domain\Email\EmailValidator;
+use olml89\IPGlobalTest\User\Domain\Password\Hasher;
 use olml89\IPGlobalTest\User\Domain\Url\Url;
 use olml89\IPGlobalTest\User\Domain\Url\UrlValidator;
 use olml89\IPGlobalTest\User\Domain\User;
@@ -59,7 +60,7 @@ final class JsonTypicodePostGetter implements RemotePostRetriever
                     // We omit the retrieved user id and create a random UUID instead
                     id: Uuid::random($this->uuidGenerator),
                     // We generate a dummy password as JsonPlaceholderApi user resource doesn't expose one
-                    password: $this->passwordFactory->create(),
+                    password: $this->passwordFactory->random(),
                     name: new StringValueObject($userData->name),
                     username: new StringValueObject($userData->username),
                     email: new Email($userData->email, $this->emailValidator),

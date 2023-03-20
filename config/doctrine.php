@@ -95,6 +95,7 @@ return [
         'commands' => [
             DiffCommand::class,
             MigrateCommand::class,
+            ResetCommand::class,
         ],
 
     ],

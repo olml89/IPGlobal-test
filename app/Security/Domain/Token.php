@@ -8,7 +8,9 @@ use olml89\IPGlobalTest\User\Domain\User;
 
 class Token
 {
-    private readonly int $id;
+    // The id can't be set as readonly here because of Doctrine.
+    // This is a bit of an infrastructure permeating into our domain code smell, but it's a good trade in this case.
+    private int $id;
     private readonly DateTimeImmutable $expiresAt;
 
     public function __construct(

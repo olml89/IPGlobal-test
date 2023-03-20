@@ -3,22 +3,28 @@
 namespace Database\Factories\ValueObjects;
 
 use Database\Factories\Factory;
+use Faker\Generator as Faker;
+use olml89\IPGlobalTest\User\Domain\Password\Hasher;
 use olml89\IPGlobalTest\User\Domain\Password\Password;
-use ReflectionClass;
-use ReflectionException;
 
 final class PasswordFactory extends Factory
 {
-    /**
-     * @throws ReflectionException
-     */
-    public function create(): Password
-    {
-        $reflectionClass = new ReflectionClass(Password::class);
-        $password = $reflectionClass->newInstanceWithoutConstructor();
-        $reflectionClass->getProperty('hash')->setAccessible(true);
-        $reflectionClass->getProperty('hash')->setValue($password, $this->faker->password());
+    private readonly Hasher $hasher;
 
-        return $password;
+    public function __construct(Faker $faker, Hasher $hasher)
+    {
+        parent::__construct($faker);
+
+        $this->hasher = $hasher;
+    }
+
+    public function create(string $plain): Password
+    {
+        return Password::create($plain, $this->hasher);
+    }
+
+    public function random(): Password
+    {
+        return $this->create($this->faker->password());
     }
 }

@@ -3,20 +3,21 @@
 namespace Tests\Feature\Security;
 
 use Database\Factories\UserFactory;
+use Database\Factories\ValueObjects\EmailFactory;
 use Faker\Generator as Faker;
 use Illuminate\Testing\TestResponse;
-use Mockery\MockInterface;
-use olml89\IPGlobalTest\User\Domain\Password\Hasher;
-use olml89\IPGlobalTest\User\Domain\Password\Password;
-use olml89\IPGlobalTest\User\Domain\User;
 use olml89\IPGlobalTest\User\Domain\UserRepository;
+use Tests\PrepareDatabase;
 use Tests\TestCase;
 
 final class AuthenticateUseCaseFeatureTest extends TestCase
 {
+    use PrepareDatabase;
+
     private readonly Faker $faker;
     private readonly UserFactory $userFactory;
-    private readonly Hasher $hasher;
+    private readonly EmailFactory $emailFactory;
+    private readonly UserRepository $userRepository;
 
     /**
      * @throws \Psr\Container\ContainerExceptionInterface
@@ -25,23 +26,27 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->migrate();
 
         $this->faker = $this->app->get(Faker::class);
         $this->userFactory = $this->app->get(UserFactory::class);
-        $this->hasher = $this->app->get(Hasher::class);
+        $this->emailFactory = $this->app->get(EmailFactory::class);
+        $this->userRepository = $this->app->get(UserRepository::class);
     }
 
-    private function prepareInput(?string $email = null, ?string $password = null): array
+    protected function tearDown(): void
     {
-        return [
-            'email' => $email ?? $this->faker->email(),
-            'password' => $password ?? $this->faker->password(),
-        ];
+        $this->resetMigrations();
+
+        parent::tearDown();
     }
 
     public function test_invalid_email_generates_422_response(): void
     {
-        $input = $this->prepareInput(email: 'invalid email');
+        $input = [
+            'email' => 'invalid_mail',
+            'password' => $this->faker->password(),
+        ];
 
         $response = $this
             ->withHeader('Accept', 'application/json')
@@ -51,29 +56,18 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
         $response->assertUnprocessable();
     }
 
-    private function prepareUser(?User $user): void
-    {
-        $this->mock(UserRepository::class, function(MockInterface $mock) use($user): void {
-            $mock->shouldReceive('getByEmail')
-                ->once()
-                ->andReturn($user);
-        });
-    }
-
     private function getErrorMessage(TestResponse $response): string
     {
         return json_decode($response->getContent(), true)['message'];
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     public function test_unexisting_user_generates_404_response(): void
     {
-        $password = $this->faker->password();
-        $user = $this->userFactory->create()->setPassword(Password::create($password, $this->hasher));
-        $this->prepareUser(null);
-        $input = $this->prepareInput(email: (string)$user->email(), password: $password);
+        $notRegisteredEmail = 'not-registered-email@fake-mail.com';
+        $input = [
+            'email' => $notRegisteredEmail,
+            'password' => $this->faker->password(),
+        ];
 
         $response = $this
             ->withHeader('Accept', 'application/json')
@@ -83,19 +77,17 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
         $response->assertNotFound();
 
         $this->assertEquals(
-            sprintf('User with email \'%s\' does not exist', $user->email()),
+            sprintf('User with email \'%s\' does not exist', $notRegisteredEmail),
             $this->getErrorMessage($response)
         );
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     public function test_incorrect_password_generates_404_response(): void
     {
-        $user = $this->userFactory->create()->setPassword(Password::create('12345', $this->hasher));
-        $this->prepareUser($user);
-        $input = $this->prepareInput(email: (string)$user->email(), password: '54321');
+        $input = [
+            'email' => 'johndeere@fake-mail.com',
+            'password' => '54321',
+        ];
 
         $response = $this
             ->withHeader('Accept', 'application/json')
@@ -115,10 +107,14 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
      */
     public function test_existing_user_generates_a_valid_token(): void
     {
-        $password = $this->faker->password();
-        $user = $this->userFactory->create()->setPassword(Password::create($password, $this->hasher));
-        $this->prepareUser($user);
-        $input = $this->prepareInput(email: (string)$user->email(), password: $password);
+        $user = $this->userRepository->getByEmail(
+            $this->emailFactory->create('johndeere@fake-mail.com'),
+        );
+
+        $input = [
+            'email' => (string)$user->email(),
+            'password' => '12345',
+        ];
 
         $response = $this
             ->withHeader('Accept', 'application/json')

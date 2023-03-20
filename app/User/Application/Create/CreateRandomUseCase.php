@@ -29,7 +29,7 @@ final class CreateRandomUseCase
     public function create(string $email, string $password): UserResult
     {
         try {
-            $user = $this->userFactory->create()
+            $user = $this->userFactory->random()
                 ->setEmail(new Email($email, $this->emailValidator))
                 ->setPassword(Password::create($password, $this->hasher));
 

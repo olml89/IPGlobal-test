@@ -11,10 +11,18 @@ final class EmailFactory extends StringValueObjectFactory
     /**
      * @throws ReflectionException
      */
-    public function create(): Email
+    public function random(): Email
+    {
+        return $this->create($this->faker->email());
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function create(string $value): Email
     {
         $email = (new ReflectionClass(Email::class))->newInstanceWithoutConstructor();
-        $this->setValue($email, $this->faker->email());
+        $this->setValue($email, $value);
 
         return $email;
     }

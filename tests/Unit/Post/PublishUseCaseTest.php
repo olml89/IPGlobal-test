@@ -2,102 +2,89 @@
 
 namespace Tests\Unit\Post;
 
-use Database\Factories\UserFactory;
+use Database\Factories\ValueObjects\EmailFactory;
 use Faker\Generator as Faker;
 use Mockery\MockInterface;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\UuidGenerator;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishData;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishUseCase;
 use olml89\IPGlobalTest\Post\Domain\PostRepository;
-use olml89\IPGlobalTest\Post\Domain\PostStorageException;
 use olml89\IPGlobalTest\User\Domain\User;
+use olml89\IPGlobalTest\User\Domain\UserRepository;
+use Tests\PrepareDatabase;
 use Tests\TestCase;
 
 final class PublishUseCaseTest extends TestCase
 {
+    use PrepareDatabase;
+
     private readonly Faker $faker;
-    private readonly UserFactory $userFactory;
-    private readonly PublishUseCase $publishUseCase;
+    private readonly PostRepository $postRepository;
     private readonly PublishData $publishData;
     private readonly User $user;
 
     /**
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
+     * @throws \ReflectionException
      */
     protected function setUp(): void
     {
         parent::setUp();
+        $this->migrate();
 
         $this->faker = $this->app->get(Faker::class);
-        $this->userFactory = $this->app->get(UserFactory::class);
-    }
+        $this->postRepository = $this->app->get(PostRepository::class);
 
-    /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    private function prepareUseCase(string $uuid): void
-    {
-        $uuidGenerator = $this->mock(UuidGenerator::class, function (MockInterface $mock) use($uuid): void {
-            $mock->shouldReceive('random')->once()->andReturn($uuid);
-        });
+        /** @var UserRepository $userRepository */
+        $userRepository = $this->app->get(UserRepository::class);
 
-        $this->publishUseCase = new PublishUseCase(
-            uuidGenerator: $uuidGenerator,
-            postRepository: $this->app->get(PostRepository::class),
-            userFactory: $this->app->get(UserFactory::class),
+        /** @var EmailFactory $emailFactory */
+        $emailFactory = $this->app->get(EmailFactory::class);
+
+        $this->user = $userRepository->getByEmail(
+            $emailFactory->create('johndeere@fake-mail.com')
         );
-    }
 
-    /**
-     * @throws \ReflectionException
-     */
-    private function prepareTestingData(): void
-    {
         $this->publishData = new PublishData(
-            title: $this->faker->title(),
+            title: $this->faker->text(50),
             body: $this->faker->text(),
         );
-
-        $this->user = $this->userFactory->create();
     }
 
-    /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \ReflectionException
-     */
-    public function test_that_invalid_id_generates_error(): void
+    protected function tearDown(): void
     {
-        $invalidUuid = 'invalid';
-        $this->prepareUseCase($invalidUuid);
-        $this->prepareTestingData();
+        $this->resetMigrations();
 
-        $this->expectException(PostStorageException::class);
+        parent::tearDown();
+    }
 
-        $this->publishUseCase->publish(
-            $this->publishData,
-            $this->user
+    private function generateUseCase(string $uuid): PublishUseCase
+    {
+        $this->mock(UuidGenerator::class, function(MockInterface $mock) use($uuid): void {
+            $mock->shouldReceive('random')
+                ->once()
+                ->andReturn($uuid);
+        });
+
+        return new PublishUseCase(
+            uuidGenerator: $this->app->get(UuidGenerator::class),
+            postRepository: $this->postRepository,
         );
     }
 
-    /**
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     * @throws \ReflectionException
-     */
-    public function test_result_includes_post_id(): void
+    public function test_result_includes_post_id_and_user(): void
     {
         $uuid = $this->faker->uuid();
-        $this->prepareUseCase($uuid);
-        $this->prepareTestingData();
+        $publishUseCase = $this->generateUseCase($uuid);
 
-        $publishResult = $this->publishUseCase->publish(
-            $this->publishData,
-            $this->user
+        $publishResult = $publishUseCase->publish(
+            publishData: $this->publishData,
+            user: $this->user,
         );
 
+        $this->assertDatabaseCount('posts', 2);
         $this->assertEquals($uuid, $publishResult->id);
+        $this->assertEquals((string)$this->user->id(), $publishResult->user->id);
     }
 }

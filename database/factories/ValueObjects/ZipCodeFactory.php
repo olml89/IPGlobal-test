@@ -11,7 +11,7 @@ final class ZipCodeFactory extends StringValueObjectFactory
     /**
      * @throws ReflectionException
      */
-    public function create(): ZipCode
+    public function random(): ZipCode
     {
         $zipCode = (new ReflectionClass(ZipCode::class))->newInstanceWithoutConstructor();
         $this->setValue($zipCode, $this->faker->postcode());

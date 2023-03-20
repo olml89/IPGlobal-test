@@ -12,7 +12,6 @@ use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
 use olml89\IPGlobalTest\User\Domain\Address\Geolocation\Geolocation;
 use olml89\IPGlobalTest\User\Domain\Company;
-use olml89\IPGlobalTest\User\Domain\Password\Password;
 use olml89\IPGlobalTest\User\Domain\User;
 use ReflectionException;
 
@@ -30,31 +29,42 @@ class UserFactory
     /**
      * @throws ReflectionException
      */
-    public function create(): User
+    public function random(): User
     {
         return new User(
-            id: $this->uuidFactory->create(),
-            password: $this->passwordFactory->create(),
+            id: $this->uuidFactory->random(),
+            password: $this->passwordFactory->random(),
             name: new StringValueObject($this->faker->name()),
             username: new StringValueObject($this->faker->name()),
-            email: $this->emailFactory->create(),
+            email: $this->emailFactory->random(),
             address: new Address(
                 street: $this->faker->streetAddress(),
                 suite: $this->faker->name(),
                 city: $this->faker->city(),
-                zipCode: $this->zipCodeFactory->create(),
+                zipCode: $this->zipCodeFactory->random(),
                 geoLocation: new Geolocation(
                     latitude: $this->faker->latitude(),
                     longitude: $this->faker->longitude(),
                 ),
             ),
             phone: new StringValueObject($this->faker->phoneNumber()),
-            website: $this->urlFactory->create(),
+            website: $this->urlFactory->random(),
             company: new Company(
                 name: $this->faker->name,
                 catchphrase: $this->faker->sentence(),
                 bs: $this->faker->sentence(),
             ),
         );
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function withCredentials(string $email, string $password): User
+    {
+        return $this
+            ->random()
+            ->setEmail($this->emailFactory->create($email))
+            ->setPassword($this->passwordFactory->create($password));
     }
 }

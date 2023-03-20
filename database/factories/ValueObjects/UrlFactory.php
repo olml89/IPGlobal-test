@@ -11,7 +11,7 @@ final class UrlFactory extends StringValueObjectFactory
     /**
      * @throws ReflectionException
      */
-    public function create(): Url
+    public function random(): Url
     {
         $url = (new ReflectionClass(Url::class))->newInstanceWithoutConstructor();
         $this->setValue($url, $this->faker->url());

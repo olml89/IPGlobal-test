@@ -11,10 +11,20 @@ final class UuidFactory extends StringValueObjectFactory
     /**
      * @throws ReflectionException
      */
-    public function create(): Uuid
+    public function random(): Uuid
+    {
+        return $this->create(
+            $this->faker->uuid(),
+        );
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function create(string $value): Uuid
     {
         $uuid = (new ReflectionClass(Uuid::class))->newInstanceWithoutConstructor();
-        $this->setValue($uuid, $this->faker->uuid());
+        $this->setValue($uuid, $value);
 
         return $uuid;
     }
