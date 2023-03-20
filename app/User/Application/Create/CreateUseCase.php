@@ -9,13 +9,16 @@ use olml89\IPGlobalTest\Common\Domain\ValueObjects\ValueObjectException;
 use olml89\IPGlobalTest\User\Application\UserResult;
 use olml89\IPGlobalTest\User\Domain\Address\Address;
 use olml89\IPGlobalTest\User\Domain\Address\Geolocation\Geolocation;
+use olml89\IPGlobalTest\User\Domain\Address\ZipCode\InvalidZipCodeException;
 use olml89\IPGlobalTest\User\Domain\Address\ZipCode\ZipCode;
 use olml89\IPGlobalTest\User\Domain\Address\ZipCode\ZipCodeValidator;
 use olml89\IPGlobalTest\User\Domain\Company;
 use olml89\IPGlobalTest\User\Domain\Email\Email;
 use olml89\IPGlobalTest\User\Domain\Email\EmailValidator;
+use olml89\IPGlobalTest\User\Domain\Email\InvalidEmailException;
 use olml89\IPGlobalTest\User\Domain\Password\Hasher;
 use olml89\IPGlobalTest\User\Domain\Password\Password;
+use olml89\IPGlobalTest\User\Domain\Url\InvalidUrlException;
 use olml89\IPGlobalTest\User\Domain\Url\Url;
 use olml89\IPGlobalTest\User\Domain\Url\UrlValidator;
 use olml89\IPGlobalTest\User\Domain\User;
@@ -34,7 +37,7 @@ final class CreateUseCase
     ) {}
 
     /**
-     * @throws ValueObjectException
+     * @throws InvalidEmailException | InvalidZipCodeException | InvalidUrlException
      */
     private function createUser(CreateData $createData): User
     {
