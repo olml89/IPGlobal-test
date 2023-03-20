@@ -20,7 +20,7 @@ final class RetrieveRemoteFeatureTest extends TestCase
         $this->faker = $this->app->get(Faker::class);
     }
 
-    public function test_invalid_id_returns_404_response(): void
+    public function test_invalid_id_returns_a_404_response(): void
     {
         // JsonPlaceholderTypicode API has 100 posts, so the last valid id is 100
         $id = 101;
@@ -32,7 +32,7 @@ final class RetrieveRemoteFeatureTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function test_valid_id_returns_200_response(): void
+    public function test_valid_id_returns_a_200_response_with_the_requested_post(): void
     {
         // JsonPlaceholderTypicode API has 100 posts, so the last valid id is 100
         $id = $this->faker->randomNumber(1, 100);

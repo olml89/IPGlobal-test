@@ -85,7 +85,7 @@ final class AuthenticateUseCaseTest extends TestCase
         $this->token = $tokenRepository->getByUser($this->user);
     }
 
-    public function test_invalid_email_throws_invalid_email_exception(): void
+    public function test_invalid_email_throws_an_invalid_email_exception(): void
     {
         $authenticationData = new AuthenticationData(
             email: 'invalid_email',
@@ -97,7 +97,7 @@ final class AuthenticateUseCaseTest extends TestCase
         $this->authenticateUseCase->authenticate($authenticationData);
     }
 
-    public function test_unexisting_email_throws_user_not_found_exception(): void
+    public function test_unexisting_email_throws_a_user_not_found_exception(): void
     {
         $authenticationData = new AuthenticationData(
             email: $this->faker->email(),
@@ -109,7 +109,7 @@ final class AuthenticateUseCaseTest extends TestCase
         $this->authenticateUseCase->authenticate($authenticationData);
     }
 
-    public function test_invalid_password_throws_user_not_found_exception(): void
+    public function test_invalid_password_throws_a_user_not_found_exception(): void
     {
         $authenticationData = new AuthenticationData(
             email: (string)$this->user->email(),
@@ -121,7 +121,7 @@ final class AuthenticateUseCaseTest extends TestCase
         $this->authenticateUseCase->authenticate($authenticationData);
     }
 
-    public function test_non_expired_token_is_returned(): void
+    public function test_the_original_token_is_returned_when_is_not_expired(): void
     {
         $authenticationData = new AuthenticationData(
             email: (string)$this->user->email(),
@@ -140,7 +140,7 @@ final class AuthenticateUseCaseTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function test_expired_token_is_replaced_by_a_new_valid_token(): void
+    public function test_a_new_token_is_generated_and_returned_when_the_original_token_is_expired(): void
     {
         $this->database->getDoctrineConnection()->update(
             table: 'tokens',

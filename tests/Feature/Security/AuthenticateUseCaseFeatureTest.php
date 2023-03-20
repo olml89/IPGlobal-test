@@ -41,7 +41,7 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_invalid_email_generates_422_response(): void
+    public function test_invalid_email_generates_a_422_response(): void
     {
         $input = [
             'email' => 'invalid_mail',
@@ -61,7 +61,7 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
         return json_decode($response->getContent(), true)['message'];
     }
 
-    public function test_unexisting_user_generates_404_response(): void
+    public function test_unexisting_user_generates_a_404_response(): void
     {
         $notRegisteredEmail = 'not-registered-email@fake-mail.com';
         $input = [
@@ -82,7 +82,7 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
         );
     }
 
-    public function test_incorrect_password_generates_404_response(): void
+    public function test_incorrect_password_generates_a_404_response(): void
     {
         $input = [
             'email' => 'johndeere@fake-mail.com',
@@ -105,7 +105,7 @@ final class AuthenticateUseCaseFeatureTest extends TestCase
     /**
      * @throws \ReflectionException
      */
-    public function test_existing_user_generates_a_valid_token(): void
+    public function test_existing_user_generates_a_200_response_with_a_valid_token(): void
     {
         $user = $this->userRepository->getByEmail(
             $this->emailFactory->create('johndeere@fake-mail.com'),

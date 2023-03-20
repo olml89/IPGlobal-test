@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Faker\Generator as Faker;
 use Illuminate\Database\Connection;
 use Illuminate\Testing\TestResponse;
-use Mockery\MockInterface;
 use olml89\IPGlobalTest\Security\Domain\Token;
 use olml89\IPGlobalTest\Security\Domain\TokenRepository;
 use olml89\IPGlobalTest\User\Domain\User;
@@ -101,7 +100,7 @@ final class PublishFeatureTest extends TestCase
         return json_decode($response->getContent(), true)['message'];
     }
 
-    public function test_request_without_api_token_header_generates_401_response(): void
+    public function test_request_without_api_token_header_generates_a_401_response(): void
     {
         $response = $this
             ->withHeader('Accept', 'application/json')
@@ -115,7 +114,7 @@ final class PublishFeatureTest extends TestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function test_unexisting_api_token_generates_401_response(): void
+    public function test_unexisting_api_token_generates_a_401_response(): void
     {
         /**
          * Using this we don't have to implement the delete method in our token repository,
@@ -141,7 +140,7 @@ final class PublishFeatureTest extends TestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function test_expired_api_token_generates_401_response(): void
+    public function test_expired_api_token_generates_a_401_response(): void
     {
         // We set the datetime expiration at now.
         // This is the right way to do it as the Token entity doesn't allow to modify it's internal expiredAt property.
@@ -164,7 +163,7 @@ final class PublishFeatureTest extends TestCase
         $this->assertEquals('Api token not set or expired', $this->getErrorMessage($response));
     }
 
-    public function test_invalid_body_generates_422_response(): void
+    public function test_invalid_body_generates_a_422_response(): void
     {
         $response = $this
             ->withHeader('Accept', 'application/json')
@@ -175,7 +174,7 @@ final class PublishFeatureTest extends TestCase
         $response->assertUnprocessable();
     }
 
-    public function test_valid_body_generates_201_response(): void
+    public function test_valid_body_generates_a_201_response_with_a_new_post(): void
     {
         $response = $this
             ->withHeader('Accept', 'application/json')

@@ -3,15 +3,11 @@
 namespace Test\Unit\Post;
 
 use Database\Factories\ValueObjects\EmailFactory;
-use Database\Factories\ValueObjects\UuidFactory;
 use Faker\Generator as Faker;
 use Illuminate\Database\Connection;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\InvalidUuidException;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\UuidValidator;
 use olml89\IPGlobalTest\Post\Application\Retrieve\RetrieveUseCase;
-use olml89\IPGlobalTest\Post\Domain\PostCreationException;
 use olml89\IPGlobalTest\Post\Domain\PostNotFoundException;
-use olml89\IPGlobalTest\Post\Domain\PostRepository;
 use olml89\IPGlobalTest\User\Domain\User;
 use olml89\IPGlobalTest\User\Domain\UserRepository;
 use Tests\PrepareDatabase;
@@ -62,7 +58,7 @@ final class RetrieveUseCaseTest extends TestCase
         );
     }
 
-    public function test_invalid_id_throws_domain_error(): void
+    public function test_invalid_id_throws_an_invalid_uuid_exception(): void
     {
         $invalidUuid = 'invalid_uuid';
 
@@ -71,7 +67,7 @@ final class RetrieveUseCaseTest extends TestCase
         $this->retrieveUseCase->retrieve($invalidUuid);
     }
 
-    public function test_unexisting_post_id_throws_domain_error(): void
+    public function test_unexisting_post_id_throws_a_post_not_found_exception(): void
     {
         $unexistingUuid = $this->faker->uuid();
 
@@ -83,7 +79,7 @@ final class RetrieveUseCaseTest extends TestCase
     /**
      * @throws \Doctrine\DBAL\Exception
      */
-    public function test_valid_request_returns_valid_post(): void
+    public function test_valid_request_returns_the_requested_post(): void
     {
         $uuid = $this->database->getDoctrineConnection()->fetchOne(
             query: 'select id from posts where user_id = :user_id',

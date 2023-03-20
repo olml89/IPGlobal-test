@@ -63,7 +63,7 @@ final class RetrieveFeatureTest extends TestCase
     /**
      * @throws \ReflectionException
      */
-    public function test_invalid_id_generates_422_response(): void
+    public function test_invalid_id_generates_a_422_response(): void
     {
         $invalidUuid = $this->uuidFactory->create('invalid_uuid');
 
@@ -77,7 +77,7 @@ final class RetrieveFeatureTest extends TestCase
     /**
      * @throws \ReflectionException
      */
-    public function test_unexisting_post_id_generates_404_response(): void
+    public function test_unexisting_post_id_generates_a_404_response(): void
     {
         $randomUuid = $this->uuidFactory->random();
 
@@ -88,7 +88,7 @@ final class RetrieveFeatureTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function test_existing_post_id_generates_200_response_with_correct_post_data(): void
+    public function test_existing_post_id_generates_a_200_response_with_the_requested_post(): void
     {
         /*
          * We could do this if we only wanted to get the id, but we also want to check for the

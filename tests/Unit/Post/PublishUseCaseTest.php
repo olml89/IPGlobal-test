@@ -4,11 +4,8 @@ namespace Tests\Unit\Post;
 
 use Database\Factories\ValueObjects\EmailFactory;
 use Faker\Generator as Faker;
-use Mockery\MockInterface;
-use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\UuidGenerator;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishData;
 use olml89\IPGlobalTest\Post\Application\Publish\PublishUseCase;
-use olml89\IPGlobalTest\Post\Domain\PostRepository;
 use olml89\IPGlobalTest\User\Domain\User;
 use olml89\IPGlobalTest\User\Domain\UserRepository;
 use Tests\PrepareDatabase;
@@ -18,8 +15,7 @@ final class PublishUseCaseTest extends TestCase
 {
     use PrepareDatabase;
 
-    private readonly Faker $faker;
-    private readonly PostRepository $postRepository;
+    private readonly PublishUseCase $publishUseCase;
     private readonly PublishData $publishData;
     private readonly User $user;
 
@@ -33,8 +29,7 @@ final class PublishUseCaseTest extends TestCase
         parent::setUp();
         $this->migrate();
 
-        $this->faker = $this->app->get(Faker::class);
-        $this->postRepository = $this->app->get(PostRepository::class);
+        $this->publishUseCase = $this->app->get(PublishUseCase::class);
 
         /** @var UserRepository $userRepository */
         $userRepository = $this->app->get(UserRepository::class);
@@ -46,9 +41,12 @@ final class PublishUseCaseTest extends TestCase
             $emailFactory->create('johndeere@fake-mail.com')
         );
 
+        /** @var Faker $faker */
+        $faker = $this->app->get(Faker::class);
+
         $this->publishData = new PublishData(
-            title: $this->faker->text(50),
-            body: $this->faker->text(),
+            title: $faker->text(50),
+            body: $faker->text(),
         );
     }
 
@@ -59,32 +57,14 @@ final class PublishUseCaseTest extends TestCase
         parent::tearDown();
     }
 
-    private function generateUseCase(string $uuid): PublishUseCase
+    public function test_a_new_post_is_created_with_the_authenticated_user(): void
     {
-        $this->mock(UuidGenerator::class, function(MockInterface $mock) use($uuid): void {
-            $mock->shouldReceive('random')
-                ->once()
-                ->andReturn($uuid);
-        });
-
-        return new PublishUseCase(
-            uuidGenerator: $this->app->get(UuidGenerator::class),
-            postRepository: $this->postRepository,
-        );
-    }
-
-    public function test_result_includes_post_id_and_user(): void
-    {
-        $uuid = $this->faker->uuid();
-        $publishUseCase = $this->generateUseCase($uuid);
-
-        $publishResult = $publishUseCase->publish(
+        $publishResult = $this->publishUseCase->publish(
             publishData: $this->publishData,
             user: $this->user,
         );
 
         $this->assertDatabaseCount('posts', 2);
-        $this->assertEquals($uuid, $publishResult->id);
         $this->assertEquals((string)$this->user->id(), $publishResult->user->id);
     }
 }

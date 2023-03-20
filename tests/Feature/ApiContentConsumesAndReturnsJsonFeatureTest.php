@@ -22,7 +22,7 @@ final class ApiContentConsumesAndReturnsJsonFeatureTest extends TestCase
         ];
     }
 
-    public function test_no_application_json_in_the_accept_header_generates_406_response(): void
+    public function test_no_application_json_in_the_accept_header_generates_a_406_response(): void
     {
         $response = $this
             ->withHeader('Accept', 'text/html')
@@ -31,7 +31,7 @@ final class ApiContentConsumesAndReturnsJsonFeatureTest extends TestCase
         $response->assertStatus(406);
     }
 
-    public function test_no_application_json_in_the_content_type_header_generates_415_response_on_post_requests(): void
+    public function test_no_application_json_in_the_content_type_header_generates_a_415_response_on_post_requests(): void
     {
         $response = $this
             ->withHeader('Accept', 'application/json')
@@ -41,7 +41,7 @@ final class ApiContentConsumesAndReturnsJsonFeatureTest extends TestCase
         $response->assertUnsupportedMediaType();
     }
 
-    public function test_no_application_json_in_the_content_type_header_does_not_generate_415_response_on_get_requests(): void
+    public function test_no_application_json_in_the_content_type_header_does_not_generate_a_415_response_on_get_requests(): void
     {
         $response = $this
             ->withHeader('Accept', 'application/json')

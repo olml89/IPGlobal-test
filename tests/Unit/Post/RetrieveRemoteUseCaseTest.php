@@ -45,7 +45,7 @@ final class RetrieveRemoteUseCaseTest extends TestCase
         });
     }
 
-    public function test_unexisting_remote_api_throws_domain_error(): void
+    public function test_unavailable_remote_api_throws_a_post_not_found_exception(): void
     {
         $this->requests->append(
             new ConnectException(
@@ -59,7 +59,7 @@ final class RetrieveRemoteUseCaseTest extends TestCase
         $this->retrieveUseCase->retrieve($this->faker->randomNumber());
     }
 
-    public function test_unexisting_post_id_throws_domain_error(): void
+    public function test_unexisting_post_id_throws_a_post_not_found_exception(): void
     {
         $this->requests->append(
             new ClientException(
@@ -74,7 +74,7 @@ final class RetrieveRemoteUseCaseTest extends TestCase
         $this->retrieveUseCase->retrieve($this->faker->randomNumber());
     }
 
-    public function test_valid_request_returns_valid_post(): void
+    public function test_valid_request_returns_the_requested_post(): void
     {
         $userId = $this->faker->randomNumber();
         $postTitle = $this->faker->title();
