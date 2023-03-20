@@ -31,9 +31,4 @@ final class Md5Hash extends StringValueObject
             md5($plain),
         );
     }
-
-    public function equals(string $value): bool
-    {
-        return md5($value) === (string)$this;
-    }
 }

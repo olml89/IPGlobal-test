@@ -27,12 +27,12 @@ final class AuthenticateUseCase
     /**
      * @throws InvalidEmailException | UserNotFoundException | TokenStorageException
      */
-    public function authenticate(AuthenticationData $authorizeData): AuthenticationResult
+    public function authenticate(AuthenticationData $authenticationData): AuthenticationResult
     {
-        $email = new Email($authorizeData->email, $this->emailValidator);
+        $email = new Email($authenticationData->email, $this->emailValidator);
         $user = $this->userFinder->findByEmail($email);
 
-        if (!$user->password()->check($authorizeData->password, $this->hasher)) {
+        if (!$user->password()->check($authenticationData->password, $this->hasher)) {
             throw UserNotFoundException::invalidPassword();
         }
 
