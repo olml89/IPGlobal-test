@@ -2,6 +2,7 @@
 
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\DiffCommand;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\MigrateCommand;
+use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Migrations\ResetCommand;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\AutoIncrementalIdType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\EmailType;
 use olml89\IPGlobalTest\Common\Infrastructure\Doctrine\Types\Md5HashType;
