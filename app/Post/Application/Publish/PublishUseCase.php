@@ -2,7 +2,6 @@
 
 namespace olml89\IPGlobalTest\Post\Application\Publish;
 
-use Database\Factories\UserFactory;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\StringValueObject;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\Uuid;
 use olml89\IPGlobalTest\Common\Domain\ValueObjects\Uuid\UuidGenerator;
@@ -19,7 +18,6 @@ final class PublishUseCase
     public function __construct(
         private readonly UuidGenerator $uuidGenerator,
         private readonly PostRepository $postRepository,
-        private readonly UserFactory $userFactory,
     ) {}
 
     /**
