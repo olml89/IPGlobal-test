@@ -133,17 +133,21 @@ Steps:
 
 - Implement the two web controllers and create the post listing use case.
 
-## Phase 5: Things left
+## Phase 5: Improvement of testing
 
-Or what I'd do if I had more time to complete the test. For sure, one thing would be to implement a nice
-testing environment. The features are currently tested (on local) but they use the same persistence
-environment than the application, so each time you run the test the database is polluted with test data.
+The initial tests didn't test the persistence layer as the application didn't have one, as it grew and relied on a
+database I had to integrate that part. Then I had to set up a different database set up for the testing environment
+in order to not pollute the application database with mocked test data, and to seed the testing database with the
+needed data and clean it before every test, so every one of them is idempotent.
 
-Also, this is a problem with the
-**[build-test](https://github.com/olml89/IPGlobal-test/actions/workflows/build.yml)**
-GitHub Action to implement a CI flow, the tests passed smoothly and uploaded the Codecov.io
-code coverage % badge until I started testing features involving persistence, as the database
-connection for the testing environment is not properly configured the action fails.
+The last part was to set up the CI GitHub Action that builds the app to set up a database testing environment 
+already there, because until I did this the tests passed correctly on local environment but failed there.
+
+Steps:
+
+- Implement a separate database for testing environment on local
+
+- Implement a database testing environment on GitHub actions
 
 # How to use it
 
